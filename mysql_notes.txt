@@ -1,0 +1,12 @@
+CREATE USER 'Lunch4Four'@'localhost' IDENTIFIED BY 'csc4350';
+GRANT ALL PRIVILEGES ON * . * TO 'Lunch4Four'@'localhost';
+FLUSH PRIVILEGES;
+
+mysql -u Lunch4Four -p
+csc4350
+
+show databases;
+create database [db name]
+use [db name]
+show tables;
+select * from [table name]
