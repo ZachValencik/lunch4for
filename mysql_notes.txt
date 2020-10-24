@@ -10,3 +10,8 @@ create database [db name]
 use [db name]
 show tables;
 select * from [table name]
+
+//scrap
+
+ALTER USER 'Lunch4Four'@'localhost' IDENTIFIED WITH mysql_native_password BY 'csc4350';
+https://codeshack.io/basic-login-system-nodejs-express-mysql/
