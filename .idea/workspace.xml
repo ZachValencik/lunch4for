@@ -19,12 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4073ac95-b0bc-40be-a9b9-98169e98501f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/nodelogin/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nodelogin/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
-    </list>
+    <list default="true" id="4073ac95-b0bc-40be-a9b9-98169e98501f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,6 +57,7 @@
       <workItem from="1603402972673" duration="642000" />
       <workItem from="1603418463668" duration="656000" />
       <workItem from="1603516869728" duration="567000" />
+      <workItem from="1603717356227" duration="66000" />
     </task>
     <servers />
   </component>
@@ -78,6 +74,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1680" y="-299" key="run.anything.popup" timestamp="1603516945540">
