@@ -1,17 +1,38 @@
+//follow these steps on how to create a user and the database for this project
+//Create user by pasting these commands in the root accounts
+mysql -u root -p
+[enter you password]
+
+//enter these three lines one by one
 CREATE USER 'Lunch4Four'@'localhost' IDENTIFIED BY 'csc4350';
 GRANT ALL PRIVILEGES ON * . * TO 'Lunch4Four'@'localhost';
 FLUSH PRIVILEGES;
 
-mysql -u Lunch4Four -p
+//leave root account
+quit
+
+//log into new account 
+mysql -u Lunch4Four -p 
 csc4350
 
+//paste the "l4f.sql" code into mysql 
+
+//veryfy that the database exist by entering:
 show databases;
-create database [db name]
-use [db name]
+
+//to see the rows type:
+
+use Lunch4Four
 show tables;
-select * from [table name]
+select * from [table name] //use accounts 
 
-//scrap
 
+// if express is giving you an error than type this in the Lunch4Four account
 ALTER USER 'Lunch4Four'@'localhost' IDENTIFIED WITH mysql_native_password BY 'csc4350';
+
+
+reference
 https://codeshack.io/basic-login-system-nodejs-express-mysql/
+
+//scratch
+SELECT id FROM accounts;

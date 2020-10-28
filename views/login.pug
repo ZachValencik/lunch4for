@@ -1,5 +1,4 @@
 doctype html
-| PASTE YOUR HTML CODE HERE
 head
   meta(charset='utf-8')
   title Login Form Tutorial
@@ -34,8 +33,10 @@ head
     color: #ffffff;
     }
 .login-form
+  //a(href=#{signup}) Sign Up Now
   h1 Login Form
   form(action='auth' method='POST')
     input(type='text' name='username' placeholder='Username' required='')
     input(type='password' name='password' placeholder='Password' required='')
     input(type='submit')
+  a(href="/signup") Not a member? sign up now
