@@ -1,17 +1,17 @@
-nav.navbar.navbar-expand-lg.navbar-light.bg-light
+nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
   a.navbar-brand(href='#') Lunch 4 Four
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarText' aria-controls='navbarText' aria-expanded='false' aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarText.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
       li.nav-item.active
-        a.nav-link(href='#')
+        a.nav-link(href='/')
           | Home 
           span.sr-only (current)
       li.nav-item
-        a.nav-link(href='#') Account
-      li.nav-item
-        a.nav-link(href='#') Calender
+        a.nav-link(href='/users') Profile
     span.navbar-text
-      a(href="/logout")
-        button.btn.btn-outline-success.my-2.my-sm-0 log out
+    form(action="account", method='POST')
+      button.btn.btn-outline-light.my-2.my-sm-0.mr-3(type = submit) settings 
+    a(href="/logout")
+      button.btn.btn-outline-light.my-2.my-sm-0 log out

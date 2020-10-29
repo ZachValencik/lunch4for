@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
-const { response } = require('express');
+const { response, request } = require('express');
 
 let app = express();
 app.set('view engine', 'pug')
@@ -45,7 +45,11 @@ app.get('/login', function (request, response) {
 //sign up page
 //INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (1, 'test', 'test', 'test@test.com');
 app.get('/signup', function (request, response) {
-    response.render('signup')
+    if (!request.session.loggedin) {
+    response.render('signup')}
+    else{
+        response.redirect("/logout")
+    }
 });
 //connected to the log in page
 //verify if user exist
@@ -101,27 +105,7 @@ app.post('/create', function (request, response) {
 
         })
     }
-
-});
-//still connected to signup and create
-app.get('/authNew', function (request, response) {
-    let username = request.session.password;
-    let password = request.session.username;
-    if (username && password) {
-        connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function (error, results, fields) {
-            if (results.length > 0) {
-                request.session.loggedin = true;
-                request.session.username = username;
-                response.redirect('/home');
-            } else {
-                response.send('Incorrect Username and/or Password!');
-            }
-            response.end();
-        });
-    } else {
-        response.send('Please enter Username and Password!');
-        response.end();
-    }
+    //response.end(); this breaks it
 });
 
 //this is the home page
@@ -135,6 +119,54 @@ app.get('/home', function (request, response) {
     }
     response.end();
 });
+
+//settings
+//bug found ---> profile page then go into settings
+app.post("/account", (request, response) => {
+    console.log(request.session.loggedin)
+    if (request.session.loggedin) {
+        response.render("account")
+    } else {
+        response.redirect("/restricted")
+    }
+    response.end();
+})
+
+
+//profile
+app.get("/users", (request, response) => {
+    if (request.session.loggedin) {
+        console.log(request.session.username)
+        response.redirect(`/users/${request.session.username}`)
+    } else {
+        //response.redirect("Page Not Found")
+        response.redirect("/restricted")
+    }
+    response.end();
+})
+
+app.get("/users/:username", (request, response) => {
+    let username = request.params.username;
+    console.log(username);
+    let prefix = ""
+    //your profile
+    if (request.session.loggedin && request.session.username === username) {
+        prefix = "You are viewing your profile, "
+        response.render('profile', { username, prefix })
+    }
+    //your profile to other people
+    else if(request.session.loggedin && request.session.username !== username ) {
+        prefix = "You are viewing this person's public page => ";
+        response.render('profile', { username, prefix })
+
+    }else{
+        response.redirect("/restricted")
+    }
+    response.end();
+})
+
+
+
 //this is the log out page /function
 app.get('/logout', (request, response) => {
     if (request.session.loggedin) {
@@ -143,20 +175,45 @@ app.get('/logout', (request, response) => {
     } else {
         response.redirect("/restricted")
     }
+    response.end();
 })
 app.post('/success', (request, response) => {
     response.render("success")
+    response.end();
 })
 //this should be applied to the else statements if the person is not logged in or what not
 app.get('/restricted', (request, response) => {
     response.send("Permision denied")
+    response.end();
 })
 //basic 404 page
 app.get('*', (request, response) => {
     response.send("Page not found")
+    response.end();
 })
+//to do public page
+//a profile for users
+//create a new schema that is tailored to this instance
+
+//the sign up page should veryfy that the account information isnt present in the database
+//then redirect to a secondary page where they must fill out information for their profile and meeting times
+//which is then saved into a separate table
+//we need a dedicated files for routes that can be exported and imported to this file
+//the database is set up, be need a js program to generate the teams and stores it in its own table
+// month = "october" member 1 = [user id],member 2 ..... team leader = [user id] 
+//the webpage should access that table and find its user id and style it to show the user
+//replace any response.send with its own dedicated pug file 
+// reorganize and standardize the pug files
+//create a template and a function to generate a styles pages 
+//create admins role and figure out how to translate to the db ( either a boolean in the main accounts table or new table that list all the admins)
+
+//get ---> get
+//post ---307--> post
+// get xxxxx post
+//post -----> get
 
 
+//this function can be outsourced to another file
 function genID(dBase) {
     connection.query('SELECT id FROM accounts', function (error, results, fields) {
         if (results == 0) {
