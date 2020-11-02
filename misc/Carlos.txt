@@ -1,2 +1,89 @@
 This is proof that i have succesfully cloned this repo
 I added this line-Zach
+
+
+
+    // app.post('/create', function (request, response) {
+    //     //let username = request.body.email;
+
+    //     //let pw2 = request.body.passwordRetype
+    //     if (dataExist(request.body.email + "@aurora.edu") || verifyPassword(request.body.password, request.body.passwordRetype)) {
+    //         let email = dataExist(request.body.email + "@aurora.edu")
+    //         let pw = verifyPassword(request.body.password, request.body.passwordRetype)
+    //         console.log("Create level: ", email, pw)
+    //         console.log("stage one")
+    //         if (email && pw) {
+    //             console.log("stage two")
+    //             request.session.invalid = true;
+    //             request.session.valid = true;
+    //             response.redirect('/signup')
+    //         } else if (email) {
+    //             console.log("line 107 email = ", email)
+    //             request.session.invalid = true;
+    //             response.redirect('/signup')
+    //         } else if (pw) {
+    //             request.session.valid = true;
+    //             response.redirect('/signup')
+    //         }
+    //         //response.end();
+    //     } else {
+
+    //         let userInput = {
+    //             username: request.body.email,
+    //             email: request.body.email + "@aurora.edu",
+    //             password: request.body.password,
+    //             id: genID(connection)
+
+    //         }
+    //         createUser(userInput);
+    //         response.redirect(307, '/success');
+    //         //response.send("User Created")
+    //         console.log("I was summoned")
+    //     }
+
+
+    // if (username && password && email) {
+    //     connection.query('INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (?, ?, ?, ?)', [id, username, password, email], function (error, results, fields) {
+    //         if (error) throw error;
+    //         console.log(results)
+    //         // request.session.password = password;
+    //         // request.session.username = username;
+
+    //         //request.session.loggedin = true;
+    //         //request.session.username = this.username;
+    //         //console.log(request.session.password, request.session.username)
+    //        // response.redirect(307, '/success');
+
+
+    //     })
+    // }
+    //response.end(); this breaks it
+    // });
+
+    //linked to the sign up page
+    //creates user in the database
+
+    /*
+    app.post('/create', function (request, response) {
+        let username = request.body.username;
+        let password = request.body.password;
+        let email = request.body.email + "@aurora.edu";
+        let id = genID(connection);
+        if (username && password && email) {
+            connection.query('INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (?, ?, ?, ?)', [id, username, password, email], function (error, results, fields) {
+                if (error) throw error;
+                console.log(results)
+                // request.session.password = password;
+                // request.session.username = username;
+
+                //request.session.loggedin = true;
+                //request.session.username = this.username;
+                //console.log(request.session.password, request.session.username)
+                response.redirect(307, '/success');
+
+
+            })
+        }
+        //response.end(); this breaks it
+    }); 
+    */

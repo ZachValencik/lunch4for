@@ -1,28 +1,23 @@
 doctype html
 head
   meta(charset='utf-8')
-  title Login Form Tutorial
+  title Sign Up 
+  include ./bootstrap.pug
+  script(src='/js/validate.js')
   style.
+    .body{
+        margin: 0;
+        background-image: url(/images/background.jpg);
+    }
     .login-form {
     width: 300px;
     margin: 0 auto;
-    font-family: Tahoma, Geneva, sans-serif;
     }
     .login-form h1 {
     text-align: center;
-    color: #4d4d4d;
-    font-size: 24px;
     padding: 20px 0 20px 0;
     }
-    .login-form input[type="password"],
-    .login-form input[type="text"],
-    .login-form input[type="email"] {
-    width: 100%;
-    padding: 15px;
-    border: 1px solid #dddddd;
-    margin-bottom: 15px;
-    box-sizing:border-box;
-    }
+    
     .login-form input[type="submit"] {
     width: 100%;
     padding: 15px;
@@ -32,11 +27,27 @@ head
     cursor: pointer;
     font-weight: bold;
     color: #ffffff;
+    margin-bottom: 15px;
+
     }
+
 .login-form
-  h1 Sign Up Form
-  form(action='create' method='POST')
-    input(type='text' name='username' placeholder='Username' required='')
-    input(type='password' name='password' placeholder='Password' required='')
-    input(type='email' name='email' placeholder='Email' required='')
+  h1 Sign Up
+  
+  form(action='create' method='POST' )
+    if invalidEmail
+        .alert.alert-danger(role='alert') This email is already in use
+    if invalidPassword
+        .alert.alert-danger(role='alert') Passwords no not match
+    .input-group.mb-3
+        input#email.form-control(type='text'  name='email' placeholder='Email' required='')
+        .input-group-append
+            span#basic-addon2.input-group-text @aurora.edu
+    .input-group.mb-3
+        input#password.form-control(type='password' name='password' placeholder='Password' required='')
+    .input-group.mb-3
+        input#passwordRetype.form-control(type='password' name='passwordRetype' placeholder='Retype Password' required='')
+
     input(type='submit')
+    .alert.alert-primary
+        a(href="/")  Already a member? Sign in now

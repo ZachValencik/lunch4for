@@ -1,25 +1,58 @@
+let createUser = require('../controller/create-user');
+let signupVerify = require('../controller/create-controller')
+const asyncHandler = require('express-async-handler')
 module.exports = (() => {
     'use strict';
     let app = require('express').Router();
-    let connection = require('../connection')
+    let connection = require('../controller/connection')
+    
     app.get('/', function (request, response) {
         if (request.session.loggedin) {
             response.redirect("/home")
         } else {
             response.redirect("/login")
         }
-
-        // response.render('login')
     });
+
+
     //log in page
     app.get('/login', function (request, response) {
-        response.render('login')
+        if (request.session.valid){
+            request.session.valid = null;
+            response.render('login', {wrongInfo : true })
+        }else{
+            response.render('login')
+        }
     })
     //sign up page
     //INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (1, 'test', 'test', 'test@test.com');
     app.get('/signup', function (request, response) {
+        // console.log(request.session.invalid, request.session.valid)
         if (!request.session.loggedin) {
-            response.render('signup')
+            if (request.session.invalid || request.session.valid) {
+                // console.log("stage 3")
+                if (request.session.invalid && request.session.valid) {
+                    request.session.invalid = null;
+                    request.session.valid = null;
+                    // console.log("both inputs are wrong")
+                    response.render('signup', {
+                        invalidEmail: true,
+                        invalidPassword: true
+                    })
+                } else if (request.session.invalid) {
+                    request.session.invalid = null;
+                    // console.log("email exist")
+                    response.render('signup', {
+                        invalidEmail: true
+                    })
+                } else if (request.session.valid) {
+                    request.session.invalid = null;
+                    // console.log("password do not match")
+                    response.render('signup', {
+                        invalidPassword: true
+                    })
+                }
+            } else response.render('signup')
         }
         else {
             response.redirect("/logout")
@@ -40,14 +73,11 @@ module.exports = (() => {
                     //this sends a json copy to the selected row aka user
                     request.session.account = results[0]
 
-                    console.log(results[0])
-                    // request.session.email = email;
-                    // console.log(results)
-                    // console.log(results.RowDataPacket)
-
                     response.redirect('/home');
                 } else {
-                    response.send('Incorrect Username and/or Password!');
+                    // response.send('Incorrect Username and/or Password!');
+                    request.session.valid = true
+                    response.redirect("/login" )
                 }
                 response.end();
             });
@@ -57,34 +87,18 @@ module.exports = (() => {
         }
     });
 
-    //linked to the sign up page
-    //creates user in the database
-    app.post('/create', function (request, response) {
-        let username = request.body.username;
-        let password = request.body.password;
-        let email = request.body.email;
-        let id = genID(connection);
-        if (username && password && email) {
-            connection.query('INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (?, ?, ?, ?)', [id, username, password, email], function (error, results, fields) {
-                if (error) throw error;
-                console.log(results)
-                // request.session.password = password;
-                // request.session.username = username;
-
-                //request.session.loggedin = true;
-                //request.session.username = this.username;
-                //console.log(request.session.password, request.session.username)
-                response.redirect(307, '/success');
-
-
-            })
+    app.post('/create', asyncHandler(async (request, response) => {
+        let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
+        userInput;
+        if (userInput) {
+            await createUser(userInput);
+            response.redirect(307, '/success');
         }
-        //response.end(); this breaks it
-    });
+    }))
+
     app.get('/home', function (request, response) {
         if (request.session.loggedin) {
             let info = request.session
-            //console.log(info)
             response.render('home', { info })
         } else {
             response.send('Please login to view this page!');
@@ -93,9 +107,7 @@ module.exports = (() => {
     });
 
     //settings
-    //bug found ---> profile page then go into settings
     app.get("/account", (request, response) => {
-        console.log(request.session.loggedin)
         if (request.session.loggedin) {
             response.render("account")
         } else {
@@ -108,7 +120,6 @@ module.exports = (() => {
     //profile
     app.get("/users", (request, response) => {
         if (request.session.loggedin) {
-            console.log(request.session.username)
             response.redirect(`/users/${request.session.username}`)
         } else {
             //response.redirect("Page Not Found")
@@ -119,7 +130,6 @@ module.exports = (() => {
 
     app.get("/users/:username", (request, response) => {
         let username = request.params.username;
-        console.log(username);
         let prefix = ""
         //your profile
         if (request.session.loggedin && request.session.username === username) {
@@ -150,6 +160,8 @@ module.exports = (() => {
         response.end();
     })
     app.post('/success', (request, response) => {
+        request.session.valid = null;
+        request.session.invalid = null;
         response.render("success")
         response.end();
     })
@@ -160,17 +172,6 @@ module.exports = (() => {
     })
 
 
-    function genID(dBase) {
-        connection.query('SELECT id FROM accounts', function (error, results, fields) {
-            if (results == 0) {
-                return 1
-            } else {
-
-                return Math.max(results) + 1;
-            }
-
-        })
-    }
 
     return app;
 })();

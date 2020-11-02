@@ -1,5 +1,5 @@
 nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
-  a.navbar-brand(href='#') Lunch 4 Four
+  a.navbar-brand(href='/') Lunch 4 Four
   button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarText' aria-controls='navbarText' aria-expanded='false' aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarText.collapse.navbar-collapse
@@ -8,8 +8,10 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
         a.nav-link(href='/')
           | Home 
           span.sr-only (current)
-      li.nav-item
+      li.nav-item.active
         a.nav-link(href='/users') Profile
+      li.nav-item.active
+        a.nav-link(href='#') Meeting
     span.navbar-text
     a(href="/account")
       button.btn.btn-outline-light.my-2.my-sm-0.mr-3(type = submit) settings 
