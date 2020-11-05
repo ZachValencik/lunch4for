@@ -24,7 +24,7 @@ module.exports = (() => {
             response.render('login')
         }
     })
-    //sign up page
+    //sign up page ZACH WAS HERE IN HIS OWN BRANCH
     //INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (1, 'test', 'test', 'test@test.com');
     app.get('/signup', function (request, response) {
         // console.log(request.session.invalid, request.session.valid)
