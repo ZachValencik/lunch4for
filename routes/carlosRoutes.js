@@ -147,7 +147,16 @@ module.exports = (() => {
         response.end();
     })
 
+app.get("/table", (request, response) =>{
+    if(request.session.loggedin){
+        connection.query('SELECT * FROM accounts', function (error, results, fields) {
+            response.render("table", {users : results})
+        })
 
+    }else{
+        response.redirect("/restricted")
+    }
+})
 
     //this is the log out page /function
     app.get('/logout', (request, response) => {

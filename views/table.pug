@@ -1,0 +1,22 @@
+doctype html
+html(lang='en')
+    include ./header.pug
+    body
+        include ./nav.pug
+        .container
+            h1 For admin eyes only
+            table.table.table-striped
+                tr
+                    thead.thead-dark
+                        th ID
+                        th Username
+                        th Password
+                        th Email
+                        th Status
+                each u in users
+                    tr
+                        td= u.id
+                        td= u.username
+                        td= u.password
+                        td= u.email
+                        td tba
