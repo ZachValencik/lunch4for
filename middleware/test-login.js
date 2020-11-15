@@ -4,17 +4,14 @@ module.exports = (() => {
     // let verifyAdmin = require('../controller/verify-admin-status')
     let login =
         (request, response) => {
-            if( request.body == null){
-                let username = request.body.username;
-                let password = request.body.password;
-        
-            }
+            let username = request.body.username;
+            let password = request.body.password;
             if (username && password) {
                 connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function (error, results, fields) {
                     if (results.length > 0) {
                         console.log(results[0].admin)
                         request.session.loggedin = true;
-
+                       
 
                         //this sets up information for the home page
                         request.session.username = username;
@@ -34,7 +31,7 @@ module.exports = (() => {
                 response.send('Please enter Username and Password!');
                 response.end();
             }
-        };
+        });
 
     return login
 })();
