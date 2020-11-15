@@ -4,6 +4,8 @@ body
     include ./nav.pug
     .container
         h1 welcome back #{info.username}
+        if ad
+            h2 you are an admin
         ol 
             li this is home page
             li should display their next upcomming meeting

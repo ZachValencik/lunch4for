@@ -1,6 +1,7 @@
 let createUser = require('../controller/create-user');
 let signupVerify = require('../controller/create-controller')
 const asyncHandler = require('express-async-handler')
+let verifyAdmin = require('../controller/verify-admin-status')
 module.exports = (() => {
     'use strict';
     let app = require('express').Router();
@@ -58,15 +59,19 @@ module.exports = (() => {
             response.redirect("/logout")
         }
     });
-    //connected to the log in page
-    //verify if user exist
-    app.post('/auth', function (request, response) {
+    app.post('/auth',   (request, response) => {
         let username = request.body.username;
         let password = request.body.password;
         if (username && password) {
-            connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function (error, results, fields) {
+            connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], asyncHandler(async (error, results, fields) => {
                 if (results.length > 0) {
+                    console.log(results[0].admin)
                     request.session.loggedin = true;
+                    if(results[0].admin === 1){
+                        console.log("I have been invoked", await verifyAdmin(results[0]))
+                        request.session.admin = await verifyAdmin(results[0])
+                    }
+
                     //this sets up information for the home page
                     request.session.username = username;
 
@@ -80,12 +85,46 @@ module.exports = (() => {
                     response.redirect("/login" )
                 }
                 response.end();
-            });
+            }))
         } else {
             response.send('Please enter Username and Password!');
             response.end();
         }
     });
+    //connected to the log in page
+    //verify if user exist
+    // app.post('/auth',  asyncHandler(async (request, response) => {
+    //     let username = request.body.username;
+    //     let password = request.body.password;
+    //     if (username && password) {
+    //         connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function (error, results, fields) {
+    //             if (results.length > 0) {
+    //                 console.log(results[0].admin)
+    //                 request.session.loggedin = true;
+    //                 if(results[0].admin === 1){
+    //                     console.log(verifyAdmin(results))
+    //                     request.session.admin = await verifyAdmin(results[0])
+    //                 }
+
+    //                 //this sets up information for the home page
+    //                 request.session.username = username;
+
+    //                 //this sends a json copy to the selected row aka user
+    //                 request.session.account = results[0]
+
+    //                 response.redirect('/home');
+    //             } else {
+    //                 // response.send('Incorrect Username and/or Password!');
+    //                 request.session.valid = true
+    //                 response.redirect("/login" )
+    //             }
+    //             response.end();
+    //         });
+    //     } else {
+    //         response.send('Please enter Username and Password!');
+    //         response.end();
+    //     }
+    // }));
 
     app.post('/create', asyncHandler(async (request, response) => {
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
@@ -99,7 +138,13 @@ module.exports = (() => {
     app.get('/home', function (request, response) {
         if (request.session.loggedin) {
             let info = request.session
-            response.render('home', { info })
+            let ad = false
+            console.log("This is the sessions: ", request.session.loggedin)
+            console.log("This is the admin: ", request.session.admin)
+            if(request.session.admin == true){
+                ad = true
+            }
+            response.render('home', { info , ad })
         } else {
             response.send('Please login to view this page!');
         }

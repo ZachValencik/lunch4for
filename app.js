@@ -12,17 +12,34 @@ let carlosRoutes = require('./routes/carlosRoutes');
 let jackieRoutes = require('./routes/jackieRoutes');
 let nithaRoutes = require('./routes/nithaRoutes');
 let zachRoutes = require('./routes/zachRoutes');
+let login = require('./middleware/login')
 
 let app = express();
 app.set('view engine', 'pug')
 app.use(express.static('public'))
 
 //express sessions: uses cookies to know who is logged in or not
+//middleware
 app.use(session({
     secret: 'secret',
     resave: true,
     saveUninitialized: true
 }));
+app.use(function (req, res, next) {
+    if (!req.session.admin) {
+        req.session.admin = false
+    }
+
+    // get the url pathname
+    // var pathname = parseurl(req).pathname
+
+    // count the views
+    // req.session.views[pathname] = (req.session.views[pathname] || 0) + 1
+
+    next()
+})
+
+// app.use(login)
 //not sure about this part but it works
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
