@@ -1,7 +1,11 @@
 head
     title L4F
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='../public/css/style.css')
     link(href='../images/favicon.ico' rel='shortcut icon')
     meta(charset='utf-8')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
-    include ./bootstrap.pug    
+    include ./bootstrap.pug
+    style
+        include ../public/css/style.css
+    script(src="../public/js/calendar.js")

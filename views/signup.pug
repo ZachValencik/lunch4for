@@ -4,50 +4,33 @@ head
   title Sign Up 
   include ./bootstrap.pug
   script(src='/js/validate.js')
-  style.
-    .body{
-        margin: 0;
-        background-image: url(/images/background.jpg);
-    }
-    .login-form {
-    width: 300px;
-    margin: 0 auto;
-    }
-    .login-form h1 {
-    text-align: center;
-    padding: 20px 0 20px 0;
-    }
-    
-    .login-form input[type="submit"] {
-    width: 100%;
-    padding: 15px;
-    background-color: #535b63;
-    border: 0;
-    box-sizing: border-box;
-    cursor: pointer;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 15px;
+  style
+    include ../public/css/style.css  
+  include ./navSignup.pug
+body
+    div(class='container')
+        div(class='row')
+            div(class='col-sm')
+                h1 Lunch-4-Four
+                hr
+                p(class='login') Here is some info on lunch for four
+            div(class='col-sm')
+                .login-form
+                    h1 Sign Up
+                    form(action='create' method='POST' )
+                        if invalidEmail
+                            .alert.alert-danger(role='alert') This email is already in use
+                        if invalidPassword
+                            .alert.alert-danger(role='alert') Passwords no not match
+                        .input-group.mb-3
+                            input#email.form-control(type='text'  name='email' placeholder='Email' required='')
+                            .input-group-append
+                                span#basic-addon2.input-group-text @aurora.edu
+                        .input-group.mb-3
+                            input#password.form-control(type='password' name='password' placeholder='Password' required='')
+                        .input-group.mb-3
+                            input#passwordRetype.form-control(type='password' name='passwordRetype' placeholder='Retype Password' required='')
 
-    }
-
-.login-form
-  h1 Sign Up
-  
-  form(action='create' method='POST' )
-    if invalidEmail
-        .alert.alert-danger(role='alert') This email is already in use
-    if invalidPassword
-        .alert.alert-danger(role='alert') Passwords no not match
-    .input-group.mb-3
-        input#email.form-control(type='text'  name='email' placeholder='Email' required='')
-        .input-group-append
-            span#basic-addon2.input-group-text @aurora.edu
-    .input-group.mb-3
-        input#password.form-control(type='password' name='password' placeholder='Password' required='')
-    .input-group.mb-3
-        input#passwordRetype.form-control(type='password' name='passwordRetype' placeholder='Retype Password' required='')
-
-    input(type='submit')
-    .alert.alert-primary
-        a(href="/")  Already a member? Sign in now
+                        input(type='submit')
+                        .alert.alert-primary
+                            a(href="/")  Already a member? Sign in now
