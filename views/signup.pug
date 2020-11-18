@@ -16,11 +16,11 @@ body
                 p(class='login') Here is some info on lunch for four
             div(class='col-sm')
                 .login-form
-                    h1 Sign Up
+                    h1 Sign Up #{type.invalidEmail} , #{type.invalidPassword}
                     form(action='create' method='POST' )
-                        if invalidEmail
+                        if type.invalidEmail
                             .alert.alert-danger(role='alert') This email is already in use
-                        if invalidPassword
+                        if type.invalidPassword
                             .alert.alert-danger(role='alert') Passwords no not match
                         .input-group.mb-3
                             input#email.form-control(type='text'  name='email' placeholder='Email' required='')

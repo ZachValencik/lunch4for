@@ -25,10 +25,13 @@ app.use(session({
     resave: true,
     saveUninitialized: true
 }));
+
+// middleware to be exported
 app.use(function (req, res, next) {
     if (!req.session.admin) {
         req.session.admin = false
     }
+
 
     // get the url pathname
     // var pathname = parseurl(req).pathname
@@ -36,6 +39,50 @@ app.use(function (req, res, next) {
     // count the views
     // req.session.views[pathname] = (req.session.views[pathname] || 0) + 1
 
+    next()
+})
+
+app.use((req, res, next) => {
+    if (!req.session.user_info) {
+        req.session.user_info = {}
+        // request.signup.both = false
+    }
+    next();
+})
+app.use(function (req, res, next) {
+
+    if (request.login === undefined) {
+        request.login = {}
+
+    }
+    if (request.signup === undefined) {
+        request.signup = {}
+
+    }
+    // request.signup = {}
+    // console.log("setting up variables",request.signup)
+    if (request.login.error === undefined) {
+        request.login.error = false
+        // console.log("setting up variables",request.login.mismatch)
+    }
+
+    if (request.signup.password === undefined) {
+        request.signup.password = false
+    }
+
+    if (request.signup.email === undefined) {
+        request.signup.email = false
+    }
+
+    if (request.signup.both === undefined) {
+        request.signup.both = false
+    }
+    if (request.signup.invalid === undefined) {
+        request.signup.invalid = {
+            invalidEmail: false,
+            invalidPassword: false
+        }
+    }
     next()
 })
 
@@ -48,7 +95,7 @@ app.use('/', carlosRoutes, jackieRoutes, nithaRoutes, zachRoutes);
 
 //basic 404 page
 app.get('*', (request, response) => {
-    response.send("Page not found")
+    response.status(404).send("Page not found") //create a 404 page
     response.end();
 })
 
