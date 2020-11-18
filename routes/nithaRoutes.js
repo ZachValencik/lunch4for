@@ -6,5 +6,15 @@ module.exports = (() => {
         res.send('Hello Nitha');
     });
     
+    app.get('/homeNitha', function (request, response) {
+        if (request.session.loggedin) {
+            let info = request.session
+            response.render('homeNitha', { info })
+        } else {
+            response.send('Please login to view this page!');
+        }
+        response.end();
+    });
+
     return app;
 })();

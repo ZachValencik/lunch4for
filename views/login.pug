@@ -1,43 +1,33 @@
 doctype html
 head
   meta(charset='utf-8')
-  title Lunch 4 Four | Login
+  title Lunch-4-Four | Login
   include ./bootstrap.pug
-  style.
-    .login-form {
-    width: 300px;
-    margin: 0 auto;
-    }
-    .login-form h1 {
-    text-align: center;
-    padding: 20px 0 20px 0;
-    }
-
-    .login-form input[type="submit"] {
-    width: 100%;
-    padding: 15px;
-    background-color: #535b63;
-    border: 0;
-    box-sizing: border-box;
-    cursor: pointer;
-    font-weight: bold;
-    color: #ffffff;
-    margin-bottom: 20px;
-    }
-.login-form
-  h1.h1 Sign In
-  form(action='auth' method='POST')
-    if wrongInfo
-        .alert.alert-danger(role='alert') Incorrect email or address
-    .input-group.mb-3
-        input#email.form-control(type='text'  name='username' placeholder='Email' required='')
-        .input-group-append
-            span#basic-addon2.input-group-text @aurora.edu
-    //- input(type='text' name='username' placeholder='Username' required='')
-    .input-group.mb-3
-        input#password.form-control(type='password' name='password' placeholder='Password' required='')
-    //- input(type='password' name='password' placeholder='Password' required='')
-    input(type='submit')
-    
-  .alert.alert-primary
-    a(href="/signup")  Not a member? sign up now
+  style
+    include ../public/css/style.css  
+  include ./navLogin.pug
+body
+  div(class='container')
+    div(class='row')
+      div(class='col-sm')
+        h1 Lunch-4-Four
+        hr
+        p(class='login') Here is some info on lunch for four
+      div(class='col-sm')
+        .login-form
+          h1 Sign In
+          form(action='auth' method='POST')
+            if wrongInfo
+                .alert.alert-danger(role='alert') Incorrect email or address
+            .input-group.mb-3
+                input#email.form-control(type='text'  name='username' placeholder='Email' required='')
+                .input-group-append
+                    span#basic-addon2.input-group-text @aurora.edu
+            //- input(type='text' name='username' placeholder='Username' required='')
+            .input-group.mb-3
+                input#password.form-control(type='password' name='password' placeholder='Password' required='')
+            //- input(type='password' name='password' placeholder='Password' required='')
+            input(type='submit')
+            
+          .alert.alert-primary
+            a(href="/signup")  Not a member? sign up now

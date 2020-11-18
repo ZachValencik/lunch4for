@@ -1,0 +1,52 @@
+body {
+  background: url(../images/campus.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-blend-mode: multiply; /*creates faded look for background*/
+  background-color: #8b8b8b;
+}
+.col-sm{
+  background-color: rgba(0, 0, 0, 0.7);
+  margin: 20px;
+  padding: 10px;
+}
+.container {
+  text-align: center;
+  padding: 50px 0 50px 0;
+}
+h1 { /*header attributes*/
+  color: rgb(255, 255, 255);
+}
+.jumbotron {
+  background-color:rgba(0, 0, 0, 0.5); /*jumbotron opacity is set to .5 for transparent look*/
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  width: 50%; /*width is set to 50%, need to change this for different mobile viewing sizes*/
+  display: block;
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.login-form {
+  width: 300px;
+  margin: 0 auto;
+}
+.login-form input[type="submit"] {
+  width: 100%;
+  padding: 15px;
+  background-color: #535b63;
+  border: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+.navbar {
+  background-color: rgb(25, 34, 41);
+}
+p.login{
+  color: white;
+}

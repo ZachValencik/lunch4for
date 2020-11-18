@@ -3,11 +3,8 @@ include ./header.pug
 body
     include ./nav.pug
     .container
-        h1 welcome back #{info.username}
-        if ad
-            h2 you are an admin
-        ol 
-            li this is home page
-            li should display their next upcomming meeting
-            li maybe a calender that is connected to their meeting 
+        div(class='jumbotron text-center')
+            h1 Welcome Back #{info.username}
+            p This is the Lunch 4 Four website
+            div(id='calendar')
     include ./bootstrapScript.pug      
