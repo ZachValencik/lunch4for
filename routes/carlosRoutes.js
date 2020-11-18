@@ -1,11 +1,16 @@
 let createUser = require('../controller/create-user');
 let signupVerify = require('../controller/create-controller')
 const asyncHandler = require('express-async-handler')
+let user_session = require("../middleware/logged-status");
+let auth = require("../middleware/login")
+let clear = require("../util/clear")
+
+// let verifyAdmin = require('../controller/verify-admin-status')
 module.exports = (() => {
     'use strict';
     let app = require('express').Router();
     let connection = require('../controller/connection')
-    
+
     app.get('/', function (request, response) {
         if (request.session.loggedin) {
             response.redirect("/home")
@@ -17,75 +22,41 @@ module.exports = (() => {
 
     //log in page
     app.get('/login', function (request, response) {
-        if (request.session.valid){
+        if (request.session.valid) {
             request.session.valid = null;
-            response.render('login', {wrongInfo : true })
-        }else{
+            response.render('login', { wrongInfo: true })
+        } else {
             response.render('login')
         }
     })
-    //sign up page ZACH WAS HERE IN HIS OWN BRANCH
+    //sign up page
     //INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (1, 'test', 'test', 'test@test.com');
-    app.get('/signup', function (request, response) {
+
+    let signup_handler = require("../middleware/signup_route_handler")
+    app.get('/signup', signup_handler, asyncHandler(async (request, response) => {
         // console.log(request.session.invalid, request.session.valid)
         if (!request.session.loggedin) {
-            if (request.session.invalid || request.session.valid) {
-                // console.log("stage 3")
-                if (request.session.invalid && request.session.valid) {
-                    request.session.invalid = null;
-                    request.session.valid = null;
-                    // console.log("both inputs are wrong")
-                    response.render('signup', {
-                        invalidEmail: true,
-                        invalidPassword: true
-                    })
-                } else if (request.session.invalid) {
-                    request.session.invalid = null;
-                    // console.log("email exist")
-                    response.render('signup', {
-                        invalidEmail: true
-                    })
-                } else if (request.session.valid) {
-                    request.session.invalid = null;
-                    // console.log("password do not match")
-                    response.render('signup', {
-                        invalidPassword: true
-                    })
-                }
-            } else response.render('signup')
+            let input = { type: request.signup.invalid}
+            clear()
+            response.render('signup', input)
+            // console.log(request.signup.invalid)
+            // console.log("email: ", request.signup.email, request.signup.invalid.invalidEmail)
+            // console.log("password: ", request.signup.password, request.signup.invalid.invalidPassword)
+            // console.log("both: ", request.signup.both, request.signup.invalid.invalidEmail, request.signup.invalid.invalidPassword)
+            // console.log("input", input)
         }
         else {
             response.redirect("/logout")
         }
-    });
-    //connected to the log in page
-    //verify if user exist
-    app.post('/auth', function (request, response) {
-        let username = request.body.username;
-        let password = request.body.password;
-        if (username && password) {
-            connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function (error, results, fields) {
-                if (results.length > 0) {
-                    request.session.loggedin = true;
-                    //this sets up information for the home page
-                    request.session.username = username;
+    }));
+    //the original code inside the route was outsourced to a middleware file 
+    
 
-                    //this sends a json copy to the selected row aka user
-                    request.session.account = results[0]
-
-                    response.redirect('/home');
-                } else {
-                    // response.send('Incorrect Username and/or Password!');
-                    request.session.valid = true
-                    response.redirect("/login" )
-                }
-                response.end();
-            });
-        } else {
-            response.send('Please enter Username and Password!');
-            response.end();
-        }
+    app.post('/auth', auth, (request, response) => {
+        response.redirect('/home');
     });
+
+
 
     app.post('/create', asyncHandler(async (request, response) => {
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
@@ -96,36 +67,34 @@ module.exports = (() => {
         }
     }))
 
-    app.get('/home', function (request, response) {
-        if (request.session.loggedin) {
-            let info = request.session
-            response.render('home', { info })
-        } else {
-            response.send('Please login to view this page!');
+    
+
+    app.get('/home', user_session, function (request, response) {
+        // console.log(request.login.mismatch)
+        // console.log(request.signup.password)
+        let info = request.session
+        let ad = false
+        // console.log("This is the sessions: ", request.session.loggedin)
+        // console.log("This is the admin: ", request.session.admin)
+        if (request.session.admin == true) {
+            ad = true
         }
-        response.end();
+        response.render('home', { info, ad })
+
     });
 
     //settings
-    app.get("/account", (request, response) => {
-        if (request.session.loggedin) {
-            response.render("account")
-        } else {
-            response.redirect("/restricted")
-        }
-        response.end();
+    app.get("/account", user_session, user_session, (request, response) => {
+
+        response.render("account")
+
     })
 
 
     //profile
-    app.get("/users", (request, response) => {
-        if (request.session.loggedin) {
-            response.redirect(`/users/${request.session.username}`)
-        } else {
-            //response.redirect("Page Not Found")
-            response.redirect("/restricted")
-        }
-        response.end();
+    app.get("/users", user_session, (request, response) => {
+        response.redirect(`/users/${request.session.username}`)
+
     })
 
     app.get("/users/:username", (request, response) => {
@@ -147,18 +116,30 @@ module.exports = (() => {
         response.end();
     })
 
+    let admin_session = require("../middleware/admin_session")
+    app.get("/table", admin_session, (request, response) => {
+        connection.query('SELECT * FROM accounts', function (error, results, fields) {
+            response.render("table", { users: results })
+        })
+    })
+
+    app.get("/admin-list", admin_session,(request, response) => {
+            connection.query('SELECT * FROM admin', function (error, results, fields) {
+                // console.log(res)
+                response.render("admin-table", { users: results })
+                //  response.send(fields)
+            })
+
+    })
 
 
     //this is the log out page /function
-    app.get('/logout', (request, response) => {
-        if (request.session.loggedin) {
+    app.get('/logout', user_session, (request, response) => {
             request.session.loggedin = false;
+            request.session.destroy();
             response.redirect("/login")
-        } else {
-            response.redirect("/restricted")
-        }
-        response.end();
     })
+
     app.post('/success', (request, response) => {
         request.session.valid = null;
         request.session.invalid = null;
@@ -167,7 +148,7 @@ module.exports = (() => {
     })
     //this should be applied to the else statements if the person is not logged in or what not
     app.get('/restricted', (request, response) => {
-        response.send("Permision denied")
+        response.status(400).send("Permision denied") //make a pug file
         response.end();
     })
 

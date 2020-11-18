@@ -1,0 +1,16 @@
+html
+    head
+        include ./bootstrapScript.pug
+        include ./header.pug
+        style
+            include ../public/css/style.css
+    body
+        include ./nav.pug
+        div(class='jumbotron text-center')
+            h1 Welcome Back #{info.username}
+            p This is the Lunch 4 Four website
+            form
+                div(class='input-group')
+                    input(type='email' class='form-control' size="50" placeholder="Email Address" required)
+                    div(class='input-group-btn')
+                        button(type='button' class='btn btn-danger') Subscribe
