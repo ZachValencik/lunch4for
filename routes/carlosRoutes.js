@@ -206,7 +206,7 @@ app.get("/table", (request, response) =>{
 app.get("/admin-list", (request, response) =>{
     if(request.session.loggedin && request.session.admin){
         connection.query('SELECT * FROM admin', function (error, results, fields) {
-            console.log(res)
+            // console.log(res)
             response.render("admin-table", {users : results})
         //  response.send(fields)
         })
