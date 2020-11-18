@@ -12,7 +12,8 @@ let carlosRoutes = require('./routes/carlosRoutes');
 let jackieRoutes = require('./routes/jackieRoutes');
 let nithaRoutes = require('./routes/nithaRoutes');
 let zachRoutes = require('./routes/zachRoutes');
-let login = require('./middleware/login')
+let login = require('./middleware/login');
+const banner_alerts = require('./middleware/banner_alerts');
 
 let app = express();
 app.set('view engine', 'pug')
@@ -49,42 +50,7 @@ app.use((req, res, next) => {
     }
     next();
 })
-app.use(function (req, res, next) {
-
-    if (request.login === undefined) {
-        request.login = {}
-
-    }
-    if (request.signup === undefined) {
-        request.signup = {}
-
-    }
-    // request.signup = {}
-    // console.log("setting up variables",request.signup)
-    if (request.login.error === undefined) {
-        request.login.error = false
-        // console.log("setting up variables",request.login.mismatch)
-    }
-
-    if (request.signup.password === undefined) {
-        request.signup.password = false
-    }
-
-    if (request.signup.email === undefined) {
-        request.signup.email = false
-    }
-
-    if (request.signup.both === undefined) {
-        request.signup.both = false
-    }
-    if (request.signup.invalid === undefined) {
-        request.signup.invalid = {
-            invalidEmail: false,
-            invalidPassword: false
-        }
-    }
-    next()
-})
+app.use(banner_alerts)
 
 // app.use(login)
 //not sure about this part but it works

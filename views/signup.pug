@@ -16,7 +16,7 @@ body
                 p(class='login') Here is some info on lunch for four
             div(class='col-sm')
                 .login-form
-                    h1 Sign Up #{type.invalidEmail} , #{type.invalidPassword}
+                    h1 Sign Up
                     form(action='create' method='POST' )
                         if type.invalidEmail
                             .alert.alert-danger(role='alert') This email is already in use

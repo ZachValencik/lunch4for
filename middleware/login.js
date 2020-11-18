@@ -30,7 +30,7 @@ module.exports = (() => {
             }))
         } else {
             response.send('Please enter Username and Password!');
-            return response.sendStatus(401);
+            return response.sendStatus(401); 
             response.end();
         }
 
