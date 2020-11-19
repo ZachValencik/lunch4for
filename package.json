@@ -1,0 +1,35 @@
+{
+  "name": "lunch4for",
+  "version": "1.0.0",
+  "description": "Read the mysql_notes.txt to set up database use \"node app.js\" to start it  there is a dummy account automatically generated so",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "debug": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "express-async-handler": "^1.1.4",
+    "express-session": "^1.17.1",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.6",
+    "path": "^0.12.7",
+    "pug": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachValencik/lunch4for.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZachValencik/lunch4for/issues"
+  },
+  "homepage": "https://github.com/ZachValencik/lunch4for#readme"
+}
