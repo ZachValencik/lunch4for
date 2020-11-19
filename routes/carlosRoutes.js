@@ -84,11 +84,11 @@ module.exports = (() => {
     });
 
     //settings
-    app.get("/account", user_session, user_session, (request, response) => {
+    //app.get("/account", user_session, user_session, (request, response) => {
 
-        response.render("account")
+        //response.render("account")
 
-    })
+    //})
 
 
     //profile
