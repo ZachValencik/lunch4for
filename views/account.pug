@@ -1,11 +1,119 @@
 doctype html
-include ./header.pug 
+head
+    include ./header.pug 
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style.
+      .switch {
+      position: absolute;
+      margin-left: 880px;
+      margin-top: 60px;
+      display: inline-block;
+      width: 90px;
+      height: 34px;
+      }
+      .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      }
+      .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+      .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+      }
+      input:checked + .slider {
+      background-color: dodgerblue;
+      }
+      input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(55px);
+      }
+      /* Rounded sliders */
+      .slider.round {
+      border-radius: 44px;
+      }
+      .slider.round:before {
+      border-radius: 50%;
+      }
+      .slider:after{
+        content:'OFF';
+        color: white;
+        display: block;
+        position: absolute;
+        transform: translate(-50%,-50%);
+        top: 50%;
+        left: 50%;
+        font-size: 10px;
+        font-family: Verdana, sans-serif;
+        }
+        input:checked + .slider:after {  
+        content:'ON';
+        }
+        h1{
+          font-family: "Courier New", sans-serif;
+          color:dodgerblue;
+          font-size: 60px;
+          margin-top: 40px;
+          margin-bottom: 35px;
+      }
+      label{
+          color:black;
+            font-family: "Roboto", sans-serif;
+            text-transform: uppercase;
+            font-size: 20px;
+            letter-spacing: 1px;
+            margin-left: 2px;
+            margin-top: 20px;
+      }
+      .btn {
+          font-family: "Roboto", sans-serif;
+          text-transform: uppercase;
+          font-size: 15px;
+          color: black;
+          background:white;
+          padding: 7px 15px;
+          box-shadow:0px 2px 4px 0px;
+          cursor: pointer;
+      }
 body
     include ./nav.pug
+    label.switch
+        input(type="checkbox" checked="")
+        span.slider.round
     .container
-        h1 This is the Accounts page    
-        ul 
-            li edit account settings
-                li email, password, username etc
-            li save those changes
-            li option to activate/deactivate from the monthly meetings
+    h1 Account Settings 
+    form(action="accounts", method="POST")
+    form(action="update", method="POST")
+        div
+        label(for="id") ID:
+        input(type="hidden" name="id" value="1")
+        div
+            label(for="username") Username:
+            input(name="username" value="test")
+        div
+            label(for="email") Email:
+            input(name="email" value="test@aurora.edu")
+        div
+            label(for="password") Password:
+            input(name="password" value="test")
+    
+        button.btn(type="submit" style="margin:5px;") Save Changes
+        button.btn(type="reset" style="margin:5px;") Cancel
