@@ -6,7 +6,7 @@ module.exports = (() => {
         host: 'localhost',
         user: 'Lunch4Four',
         password: 'csc4350',
-        database: 'lunch4fourdemo'
+        database: 'lunch4four'
     });
     return connection
 })();
