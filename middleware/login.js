@@ -11,9 +11,10 @@ module.exports = (() => {
                     // console.log(results[0].admin)
                     request.session.loggedin = true;
                     if (results[0].admin === 1) {
-                        // console.log("I have been invoked", await verifyAdmin(results[0]))
-                        request.session.admin = await verifyAdmin(results[0])
+                        console.log("I have been invoked", results[0])
+                        request.session.admin = !(await verifyAdmin(results[0]))
                     }
+                    console.log(request.session.admin)
                     //this sets up information for the home page
                     request.session.username = username;
 

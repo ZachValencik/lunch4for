@@ -5,7 +5,7 @@ html(lang='en')
         include ./nav.pug
         .container
             h1 For admin eyes only
-            table.table.table-striped
+            table.table.table-dark
                 tr
                     thead.thead-dark
                         th ID
@@ -19,4 +19,4 @@ html(lang='en')
                         td= u.username
                         td= u.password
                         td= u.email
-                        td tba
+                        td= u.active
