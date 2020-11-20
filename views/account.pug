@@ -8,11 +8,11 @@ head
     style.
       .switch {
       position: absolute;
-      margin-left: 500px;
-      margin-top: 120px;
+      margin-left: 400px; /*Moves whole slider and outside box to the left/right*/
+      margin-top: 112px; /*Moves whole slider and outside box up/down*/
       display: inline-block;
-      width: 90px;
-      height: 34px;
+      width: 90px; /*Changes width of outside box of slider*/
+      height: 36px; /*Changes height of outside box of slider*/
       }
       .switch input {
       opacity: 0;
@@ -26,23 +26,23 @@ head
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
+      background-color: #ccc /*Color of "OFF"*/ ;
       -webkit-transition: .4s;
       transition: .4s;
       }
       .slider:before {
       position: absolute;
       content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
+      height: 28px;/*Changes height of slider*/
+      width: 28px; /*Changes width of slider*/
+      left: 4px; /*Moves the slider to the left*/
+      bottom: 4px;/*Moves the slider up/down within the outside box*/
+      background-color: white; /*Color of text*/
       -webkit-transition: .4s;
-      transition: .4s;
+      transition: .4s; /*Speed of slider*/
       }
       input:checked + .slider {
-      background-color: dodgerblue;
+      background-color: #535b63; /*Color of "ON"*/
       }
       input:checked + .slider:before {
       -webkit-transform: translateX(26px);
@@ -62,8 +62,8 @@ head
         display: block;
         position: absolute;
         transform: translate(-50%,-50%);
-        top: 50%;
-        left: 50%;
+        top: 50%; /*Moves text up/down*/
+        left: 50%; /*Moves text left/right*/
         font-size: 10px;
         font-family: Verdana, sans-serif;
         }
@@ -77,6 +77,11 @@ head
             letter-spacing: 1px;
             margin-left: 2px;
             margin-top: 20px;
+        }
+        span.input-group-text{
+            width: 130px;
+            margin: -42px 0px 0px 280px;
+            
         }
 body
     include ./nav.pug
@@ -92,8 +97,10 @@ body
             label(for="username") Username:
             input(name="username" value="test")
         div
-            label(for="email") Email:
-            input(name="email" value="test@aurora.edu")
+            label(for="email") Email: 
+            input(name="email" value="test")
+            .input-group-append
+            span#basic-addon2.input-group-text @aurora.edu
         div
             label(for="password") Password:
             input(name="password" value="test")
