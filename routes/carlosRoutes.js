@@ -3,7 +3,8 @@ let signupVerify = require('../controller/create-controller')
 const asyncHandler = require('express-async-handler')
 let user_session = require("../middleware/logged-status");
 let auth = require("../middleware/login")
-let clear = require("../util/clear")
+let clear = require("../util/clear");
+const { request, response } = require('express');
 
 // let verifyAdmin = require('../controller/verify-admin-status')
 module.exports = (() => {
@@ -67,9 +68,27 @@ module.exports = (() => {
         }
     }))
 
-    
+    //this function returns the total # of users that are either active or inactive
+    let activeChecker = require('../controller/get_admin_data')
+    //this is a middleware function that loads the admin homepage depending if they are admin other wise render the default page
+    let admin_homepage = asyncHandler(async  (request , response, next) => {
 
-    app.get('/home', user_session, function (request, response) {
+        if (request.session.admin){
+            console.log("activeChecker(1) =", activeChecker(0))
+            let current_active_members = {
+                active : await activeChecker(1),
+                inactive :  await activeChecker(0)
+            }
+            // console.log(request.session.account)
+            // console.log(current_active_members.active)
+            response.render('admin-homepage', current_active_members)
+            // response.send("You are admin")
+        } else{
+            return next()
+        }
+    })
+
+    app.get('/home', user_session,admin_homepage, function (request, response) {
         // console.log(request.login.mismatch)
         // console.log(request.signup.password)
         let info = request.session
