@@ -5,13 +5,13 @@ module.exports = (() => {
         connection.query('SELECT * FROM accounts WHERE active = ? AND admin = 0', [ userInput], (error, results, fields) => {
             // console.log("data exist called lol")
             // console.log(results.length)
-            resolve(results.length );
+            resolve(results.length);
         });
      });
      
      userExists().then(result => {
         //  console.log(result);
-         return Boolean(result)
+         return result
 
      });
 

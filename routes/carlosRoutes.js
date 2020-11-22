@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler')
 let user_session = require("../middleware/logged-status");
 let auth = require("../middleware/login")
 let clear = require("../util/clear");
+let profileValidator = require('../controller/profile_validator')
 const { request, response } = require('express');
 
 // let verifyAdmin = require('../controller/verify-admin-status')
@@ -37,7 +38,7 @@ module.exports = (() => {
     app.get('/signup', signup_handler, asyncHandler(async (request, response) => {
         // console.log(request.session.invalid, request.session.valid)
         if (!request.session.loggedin) {
-            let input = { type: request.signup.invalid}
+            let input = { type: request.signup.invalid }
             clear()
             response.render('signup', input)
             // console.log(request.signup.invalid)
@@ -51,7 +52,7 @@ module.exports = (() => {
         }
     }));
     //the original code inside the route was outsourced to a middleware file 
-    
+
 
     app.post('/auth', auth, (request, response) => {
         response.redirect('/home');
@@ -64,31 +65,37 @@ module.exports = (() => {
         userInput;
         if (userInput) {
             await createUser(userInput);
-            response.redirect(307, '/success');
+            response.render('create-profile')
+            // response.redirect(307, '/profile-creator');
         }
     }))
+
+    app.post('/profile-create', (request,response) => {
+        // response.render('create-profile')
+        response.send("Profile Created")
+    })
 
     //this function returns the total # of users that are either active or inactive
     let activeChecker = require('../controller/get_admin_data')
     //this is a middleware function that loads the admin homepage depending if they are admin other wise render the default page
-    let admin_homepage = asyncHandler(async  (request , response, next) => {
+    let admin_homepage = asyncHandler(async (request, response, next) => {
 
-        if (request.session.admin){
+        if (request.session.admin) {
             console.log("activeChecker(1) =", activeChecker(0))
             let current_active_members = {
-                active : await activeChecker(1),
-                inactive :  await activeChecker(0)
+                active: await activeChecker(1),
+                inactive: await activeChecker(0)
             }
             // console.log(request.session.account)
             // console.log(current_active_members.active)
             response.render('admin-homepage', current_active_members)
             // response.send("You are admin")
-        } else{
+        } else {
             return next()
         }
     })
 
-    app.get('/home', user_session,admin_homepage, function (request, response) {
+    app.get('/home', user_session, admin_homepage, function (request, response) {
         // console.log(request.login.mismatch)
         // console.log(request.signup.password)
         let info = request.session
@@ -105,7 +112,7 @@ module.exports = (() => {
     //settings
     //app.get("/account", user_session, user_session, (request, response) => {
 
-        //response.render("account")
+    //response.render("account")
 
     //})
 
@@ -116,7 +123,13 @@ module.exports = (() => {
 
     })
 
-    app.get("/users/:username", (request, response) => {
+
+    // let profile_exist = (request, response, next) {
+    //     let username = request.params.username;
+    // }
+  
+
+    app.get("/users/:username", asyncHandler(async (request, response) => {
         let username = request.params.username;
         let prefix = ""
         //your profile
@@ -126,14 +139,21 @@ module.exports = (() => {
         }
         //your profile to other people
         else if (request.session.loggedin && request.session.username !== username) {
-            prefix = "You are viewing this person's public page => ";
-            response.render('profile', { username, prefix })
+            if (await profileValidator(username)) {
+
+                prefix = "You are viewing this person's public page => ";
+                response.render('profile', { username, prefix })
+            }
+            else{
+                //make this pretty
+                response.status(400).send("This person does not exist")
+            }
 
         } else {
             response.redirect("/restricted")
         }
         response.end();
-    })
+    }))
 
     let admin_session = require("../middleware/admin_session")
     app.get("/table", admin_session, (request, response) => {
@@ -142,21 +162,21 @@ module.exports = (() => {
         })
     })
 
-    app.get("/admin-list", admin_session,(request, response) => {
-            connection.query('SELECT * FROM admin', function (error, results, fields) {
-                // console.log(res)
-                response.render("admin-table", { users: results })
-                //  response.send(fields)
-            })
+    app.get("/admin-list", admin_session, (request, response) => {
+        connection.query('SELECT * FROM admin', function (error, results, fields) {
+            // console.log(res)
+            response.render("admin-table", { users: results })
+            //  response.send(fields)
+        })
 
     })
 
 
     //this is the log out page /function
     app.get('/logout', user_session, (request, response) => {
-            request.session.loggedin = false;
-            request.session.destroy();
-            response.redirect("/login")
+        request.session.loggedin = false;
+        request.session.destroy();
+        response.redirect("/login")
     })
 
     app.post('/success', (request, response) => {
