@@ -4,10 +4,10 @@ let connection = require('../controller/connection')
 const bcrypt = require('bcryptjs')
 module.exports = (() => {
     let auth = function (request, response, next) {
-        let username = request.body.username;
+        let email = request.body.email + '@aurora.edu';
         let password = request.body.password;
-        if (username && password) {
-            connection.query('SELECT * FROM accounts WHERE username = ?', [username], asyncHandler(async (error, results, fields) => {
+        if (email && password) {
+            connection.query('SELECT * FROM accounts WHERE email = ?', [email], asyncHandler(async (error, results, fields) => {
                 if (results.length > 0 &&(await bcrypt.compare(password,results[0].password))) {
                     // console.log(results[0].admin)
                     request.session.loggedin = true;
@@ -17,7 +17,7 @@ module.exports = (() => {
                     }
                     console.log(request.session.admin)
                     //this sets up information for the home page
-                    request.session.username = username;
+                    request.session.username = results[0].username;
 
                     //this sends a json copy to the selected row aka user
                     request.session.account = results[0]
