@@ -92,7 +92,9 @@ body
     h1 Account Settings 
     form(action="accounts", method="POST")
     form(action="update", method="POST")
-        h1(for="id") ID:
+        div 
+            label(for="id") ID:
+            input(name="id" value="3")
         div
             label(for="username") Username:
             input(name="username" value="j1")
