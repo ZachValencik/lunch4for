@@ -11,7 +11,9 @@ module.exports = (() => {
     })
     app.get("/account", (request, response) => {
         if (request.session.loggedin) {
-            response.render("account")
+            console.log("This is the jackieroutes",request.accounts.info);
+            let info = request.accounts.info
+            response.render("account",{info});
         } else {
             response.redirect("/restricted")
         }
@@ -19,9 +21,15 @@ module.exports = (() => {
              
         });
     app.get("/accounts/:id",function(req,res){
+
         connection.query("SELECT * FROM accounts WHERE id=?",[req.params.id],(err,results,fields)=> {
             if(!err) {
-            res.send(results)
+            
+            req.accounts.info = JSON.stringify(results[0]);
+
+            //request.accounts = results[0];
+            console.log("This is the login accounts:",req.accounts.info);
+            res.json(req.accounts.info)
             } else {
             consol.log(err);
             }
@@ -41,9 +49,9 @@ module.exports = (() => {
         //console.log(req.body.email);
         //console.log(req.body.password);
 
-        connection.query("UPDATE accounts SET username='"+req.body.username+"'WHERE id='"+req.body.id+"'",function(err,result) {
+       connection.query("UPDATE accounts SET username='"+req.body.username+"'WHERE id='"+req.body.id+"'",function(err,result) {
         //connection.query("UPDATE accounts SET username='"+req.body.username+",email='"+req.body.email+",password='"+req.body.password+"'WHERE id='"+req.body.id+"'",function(err,result) {
-        //connection.query("UPDATE accounts SET username=?,email=?,password=? WHERE id=?",[username,email,password,id,],function(err,results){
+        //connection.query("UPDATE accounts SET username=?,email=?,password=? WHERE id=?",[username,email,password,id],function(err,results){
             if(err) throw err;
             else res.send('Succesfully Updated ID:'+req.body.id);
         });

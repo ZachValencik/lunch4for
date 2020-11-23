@@ -8,7 +8,14 @@ module.exports = (() => {
         if (username && password) {
             connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], asyncHandler(async (error, results, fields) => {
                 if (results.length > 0) {
-                    // console.log(results[0].admin)
+                    //console.log(results[0])
+                    request.accounts.info = JSON.stringify(results[0]);
+
+                    //request.accounts = results[0];
+                    console.log("This is the login accounts:",request.accounts.info);
+                   // request.accounts = {id,username,email
+                    //request.accounts = JSON.stringify(results[0]);
+        
                     request.session.loggedin = true;
                     if (results[0].admin === 1) {
                         // console.log("I have been invoked", await verifyAdmin(results[0]))
