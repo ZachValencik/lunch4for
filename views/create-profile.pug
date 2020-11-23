@@ -1,5 +1,8 @@
 h1 Create your profile
 form(action='profile-create' method='POST')
-    input(type='text' name='name' placeholder='Name' required='')
-    input(type='textbox' name='desc' placeholder='tell us about your self' required='')
+    input(type='text' name='profile_name' placeholder='Name' required='')
+    input(type='textbox' name='profile_desc' placeholder='tell us about your self' required='')
+    select(name='department')
+        each variable in variables
+            option(value=variable._value) #{variable._dept}
     input(type='submit')

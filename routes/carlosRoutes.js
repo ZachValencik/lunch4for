@@ -5,15 +5,23 @@ let user_session = require("../middleware/logged-status");
 let auth = require("../middleware/login")
 let clear = require("../util/clear");
 let profileValidator = require('../controller/profile_validator')
-const { request, response } = require('express');
+// const { request, response } = require('express');
+let options = require('../util/select_options')
 
 // let verifyAdmin = require('../controller/verify-admin-status')
+    // console.log(options.selectOption.forEach((val) => {
+    //     if('CSC' == val._value){
+    //         console.log("Was found: ", val)
+    //     }
+    // }))
 module.exports = (() => {
     'use strict';
     let app = require('express').Router();
     let connection = require('../controller/connection')
 
     app.get('/', function (request, response) {
+
+
         if (request.session.loggedin) {
             response.redirect("/home")
         } else {
@@ -59,20 +67,36 @@ module.exports = (() => {
     });
 
 
+//this route is used to create an account
+//it is the current action for /signup form
+//it first takes the given information and verifies that it does not exist already
+//then it creates theuser with the createUser() function 
+//it will then render the create-profile page which will contain a form to which they will fill out aditional information 
+//such as name, department , and a place to add a brief summary about themselves
+//I am debationg on wether or not to add a profile pic, in which they have an option to choose from presaved pictures as their own almost like netflix
+
 
     app.post('/create', asyncHandler(async (request, response) => {
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
         userInput;
         if (userInput) {
             await createUser(userInput);
-            response.render('create-profile')
+            console.log(options.selectOption)
+            response.render('create-profile', {variables : options.selectOption})
             // response.redirect(307, '/profile-creator');
         }
     }))
+//this will be the action for the create-profile page
+//it will store the information as a json file and place it inside the profile table 
 
     app.post('/profile-create', (request,response) => {
         // response.render('create-profile')
-        response.send("Profile Created")
+        let user_profile = {
+            name : request.body.profile_name,
+            description : request.body.profile_desc,
+            department : request.body.department
+        }
+        response.json(user_profile)
     })
 
     //this function returns the total # of users that are either active or inactive
