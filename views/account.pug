@@ -6,9 +6,9 @@ head
     style.
       .switch {
       position: absolute;
-      margin-left: 880px;
+      /*margin-left: 880px;
       margin-top: 60px;
-      display: inline-block;
+      display: inline-block;*/
       width: 90px;
       height: 34px;
       }
@@ -24,7 +24,7 @@ head
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #ccc;
+      background-color: #363636;
       -webkit-transition: .4s;
       transition: .4s;
       }
@@ -68,54 +68,47 @@ head
         input:checked + .slider:after {  
         content:'ON';
         }
-        h1{
-          font-family: "Courier New", sans-serif;
-          color:dodgerblue;
-          font-size: 60px;
-          margin-top: 40px;
-          margin-bottom: 35px;
-      }
-      label{
-          color:white;
+        label{
+            color: white;
             font-family: "Roboto", sans-serif;
             text-transform: uppercase;
             font-size: 20px;
             letter-spacing: 1px;
-            margin-left: 2px;
-            margin-top: 20px;
-      }
-      .btn {
-          font-family: "Roboto", sans-serif;
-          text-transform: uppercase;
-          font-size: 15px;
-          color: black;
-          background:white;
-          padding: 7px 15px;
-          box-shadow:0px 2px 4px 0px;
-          cursor: pointer;
-      }
+        }
+      
 body
     include ./nav.pug
-    label.switch
-        input(type="checkbox" checked="")
-        span.slider.round
     .container
-    h1 Account Settings
-    .container 
-    form(action="accounts", method="POST")
-    form(action="update", method="POST")
-        div
-        label(for="id") ID:
-        input(type="hidden" name="id" value="1")
-        div
-            label(for="username") Username:
-            input(name="username" value="test")
-        div
-            label(for="email") Email:
-            input(name="email" value="test@aurora.edu")
-        div
-            label(for="password") Password:
-            input(name="password" value="test")
-    
-        button.btn(type="submit" style="margin:5px;") Save Changes
-        button.btn(type="reset" style="margin:5px;") Cancel
+        h1.white Account Settings
+        div.col-sm-auto.py-3
+            div.row
+            label.switch
+                input(type="checkbox" checked="")
+                span.slider.round
+            br
+            br
+            form(action="accounts", method="POST")
+            form(action="update", method="POST")
+                div.row.mb-1
+                    div.col-sm-6.text-right
+                        label(for="id") ID:
+                    div.col-sm-6
+                        input(type="hidden" name="id" value="1")
+                div.row.mb-1
+                    div.col-sm-6.text-right
+                        label(for="username") Username:
+                    div.col-sm-6.text-left
+                        input(name="username" value="test")
+                div.row.mb-1
+                    div.col-sm-6.text-right
+                        label(for="email") Email:
+                    div.col-sm-6.text-left
+                        input(name="email" value="test@aurora.edu")
+                div.row.mb-1
+                    div.col-sm-6.text-right
+                        label(for="password") Password:
+                    div.col-sm-6.text-left
+                        input(name="password" value="test")
+
+                button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Save Changes
+                button.btn.form(type="reset" style="margin:5px;") Cancel
