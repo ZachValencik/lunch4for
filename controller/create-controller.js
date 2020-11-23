@@ -4,6 +4,7 @@ module.exports = (() => {
     let verifyPassword = require("../util/verifyPassword")
     let connection = require("./connection")
     let genID = require('../util/id-generator')
+    const bcrypt = require('bcryptjs')
     let signupVerify = asyncHandler(async (bodyEm, bodyPw, bodyPw2, request, response, next) => {
         //returns true if something went wrong
         let email = await dataExist(bodyEm + "@aurora.edu")
@@ -44,7 +45,7 @@ module.exports = (() => {
             let userInput = {
                 username: bodyEm,
                 email: bodyEm + "@aurora.edu",
-                password: bodyPw,
+                password: await bcrypt.hash(bodyPw,10), //hashes the pw when put inside the db
                 id: genID(connection)
 
             }

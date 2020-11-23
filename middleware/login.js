@@ -1,13 +1,14 @@
 const asyncHandler = require('express-async-handler')
 let verifyAdmin = require('../controller/verify-admin-status')
 let connection = require('../controller/connection')
+const bcrypt = require('bcryptjs')
 module.exports = (() => {
     let auth = function (request, response, next) {
         let username = request.body.username;
         let password = request.body.password;
         if (username && password) {
-            connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], asyncHandler(async (error, results, fields) => {
-                if (results.length > 0) {
+            connection.query('SELECT * FROM accounts WHERE username = ?', [username], asyncHandler(async (error, results, fields) => {
+                if (results.length > 0 &&(await bcrypt.compare(password,results[0].password))) {
                     // console.log(results[0].admin)
                     request.session.loggedin = true;
                     if (results[0].admin === 1) {
@@ -29,6 +30,7 @@ module.exports = (() => {
                 response.end();
             }))
         } else {
+            
             response.send('Please enter Username and Password!');
             return response.sendStatus(401); 
             response.end();
