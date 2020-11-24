@@ -9,18 +9,21 @@ head
 body
   div(class='container')
     div(class='row')
-      div(class='col-sm')
+      //Section for website description
+      div(class='col-sm login')
         h1 Lunch-4-Four
         hr
-        p(class='login') Here is some info on lunch for four
-      div(class='col-sm')
+        p.white Here is some info on lunch for four
+
+      //Section for login form
+      div(class='col-sm login')
         .login-form
           h1 Sign In
           form(action='auth' method='POST')
             if wrongInfo
                 .alert.alert-danger(role='alert') Incorrect email or address
             .input-group.mb-3
-                input#email.form-control(type='text'  name='username' placeholder='Email' required='')
+                input#email.form-control(type='text'  name='email' placeholder='Email' required='')
                 .input-group-append
                     span#basic-addon2.input-group-text @aurora.edu
             //- input(type='text' name='username' placeholder='Username' required='')

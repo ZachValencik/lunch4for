@@ -1,0 +1,30 @@
+doctype html
+//- this is the admin homepage with a pie chart
+include ./header.pug
+body
+    include ./nav.pug
+    .container
+        div(class='jumbotron text-center')
+            h1 Welcome Back 
+            p This is the Lunch 4 Four website
+            #piechart(style='width: 100%; height: 500px; margin: auto;')
+            script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
+            script(type='text/javascript').
+              // Load google charts
+              google.charts.load('current', {'packages':['corechart']});
+              google.charts.setOnLoadCallback(drawChart);
+              // Draw the chart and set the chart values
+              function drawChart() {
+              var data = google.visualization.arrayToDataTable([
+              ['Task', 'Hours per Day'],
+              ['Active', #{active}],
+              ['Inactive', #{inactive}],
+              ]);
+              // Optional; add a title and set the width and height of the chart
+              var options = {'backgroundColor' : 'none', 'colors' : ['#003049','#D62828'], pieHole: 0.4,  'pieSliceTextStyle': { color: 'white'},
+              'titleTextStyle' : { alignment : 'center', color : 'white'}, 'legend' : {position: 'bottom', textStyle: {color: 'white', fontSize: 16}}};
+              // Display the chart inside the <div> element with id="piechart"
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              chart.draw(data, options);
+              }
+    include ./bootstrapScript.pug      

@@ -1,15 +1,18 @@
 module.exports = (() => {
 
     let connection = require('../controller/connection')
-
+    //creates a random 5 digit int based on the time
     let genId = () => {
+        let id = ((Date.now() / 1000000 % 1).toFixed(5) * 100000)
         connection.query('SELECT id FROM accounts', function (error, results, fields) {
-            if (results == 0) {
-                return 1
-            } else {
 
-                return Math.max(results) + 1;
+            if (results[0].id !== id){
+                return id
+            }else{
+                genId()
             }
+
+               
 
         })
     }
