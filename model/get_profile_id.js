@@ -7,6 +7,8 @@ module.exports = (() => {
             if (results.length > 0) {
 
                 resolve(results[0].id);
+            } else{
+                resolve(false)
             }
         });
     });

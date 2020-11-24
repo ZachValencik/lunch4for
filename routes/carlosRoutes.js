@@ -17,6 +17,7 @@ module.exports = (() => {
 
     app.get('/', function (request, response) {
         console.log(request.signedCookies.email)
+        response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
         if (request.session.loggedin) {
             response.redirect("/home")
         } else {
@@ -40,7 +41,16 @@ module.exports = (() => {
     let signup_handler = require("../middleware/signup_route_handler")
     app.get('/signup', signup_handler, asyncHandler(async (request, response) => {
         // console.log(request.session.invalid, request.session.valid)
+        // if (request.signedCookies.signup) {
+        //     console.log("been declared", request.signedCookies.signup)
+        // } else {
+        //     console.log("first declared")
+        //     response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
+        // }
+        console.log(request.signedCookies)
         if (!request.session.loggedin) {
+
+            response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
             let input = { type: request.signup.invalid }
             clear()
             response.render('signup', input)
@@ -70,6 +80,8 @@ module.exports = (() => {
     //I am debationg on wether or not to add a profile pic, in which they have an option to choose from presaved pictures as their own almost like netflix
 
     app.post('/create', asyncHandler(async (request, response) => {
+        response.clearCookie('signup')
+        console.log("create level" ,request.signedCookies)
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
         userInput;
         if (userInput) {
@@ -150,19 +162,29 @@ module.exports = (() => {
         // let tempId = await getProfileId(username)
         // console.log(await getProfileData(tempId))
         //your profile
+        let tempId = await getProfileId(username)
+        console.log(tempId)
+        let profileData = {
+            _name : "TBA",
+            _description : "TBA",
+            _department: "TBA"
+        }
         if (request.session.loggedin && request.session.username === username) {
             prefix = "You are viewing your profile, "
-            let tempId = await getProfileId(username)
-            let profileData = await getProfileData(tempId)
+            if (tempId){
+                profileData = await getProfileData(tempId)
+           }
             console.log(profileData)
             response.render('profile', { profileData })
         }
         //your profile to other people
         else if (request.session.loggedin && request.session.username !== username) {
             if (await profileValidator(username)) {
-                let tempId = await getProfileId(username)
+                // let tempId = await getProfileId(username)
                 // console.log(await getProfileData(tempId))
-                let profileData = await getProfileData(tempId)
+                if (tempId){
+                     profileData = await getProfileData(tempId)
+                }
                 prefix = "You are viewing this person's public page => ";
                 response.render('profile', { profileData })
             }

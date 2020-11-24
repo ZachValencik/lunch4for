@@ -15,24 +15,28 @@ module.exports = (() => {
             if (email && pw) {
                 // console.log("stage two")
                 request.signup.both = true
-                // console.log("######Create controller has been called 1",request.signup.both )
-                // request.session.invalid = true;
-                // request.session.valid = true;
-                // return response.redirect('/signup')
+                response.cookie('signup', { both: true, email: false, password: false }, { signed: true })
+                console.log(request.signedCookies.signup)
 
             } else if (email) {
                 // console.log("line 107 email = ", email)
                 // request.session.invalid = true;
                 request.signup.email = true
+                response.cookie('signup', { both: false, email: true, password: false }, { signed: true })
+                // response.cookie('signup', {email : true}, { signed: true })
                 // console.log("Create controller has been called 2",request.signup.email )
                 // return response.redirect('/signup')
             } else if (pw) {
                 // request.session.valid = true;
                 request.signup.password = true
+                response.cookie('signup', { both: false, email: false, password: true }, { signed: true })
+                // response.cookie('signup', {password : true}, { signed: true })
+
                 // console.log("Create controller has been called 3",request.signup.password)
                 // console.log("else if pw was called")
                 // return response.redirect('/signup')
             } else {
+                // response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
                 console.log("else statement", email, pw)
                 return false
             }
@@ -41,6 +45,7 @@ module.exports = (() => {
             return response.redirect('/signup')
             //response.end();
         } else {
+            response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
             let tempEmail = (bodyEm + "@aurora.edu")
             response.cookie('profile_email', tempEmail, { signed: true })
             // request.tempProfile.email = bodyEm + "@aurora.edu";

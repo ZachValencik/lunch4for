@@ -51,6 +51,9 @@ module.exports = (() => {
                     results[0].Department,
                 ))
             }
+            else{
+                resolve(resolve("TBA",'TBA',"TBA"))
+            }
         });
     });
 
