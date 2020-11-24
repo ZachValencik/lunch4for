@@ -55,9 +55,7 @@ module.exports = (() => {
     app.post('/auth', auth, (request, response) => {
         response.redirect('/home');
     });
-
-
-
+    
     app.post('/create', asyncHandler(async (request, response) => {
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
         userInput;
