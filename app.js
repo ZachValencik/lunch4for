@@ -14,7 +14,7 @@ let nithaRoutes = require('./routes/nithaRoutes');
 let zachRoutes = require('./routes/zachRoutes');
 let login = require('./middleware/login');
 const banner_alerts = require('./middleware/banner_alerts');
-
+var cookieParser = require('cookie-parser')
 let app = express();
 app.set('view engine', 'pug')
 app.use(express.static('public'))
@@ -50,6 +50,7 @@ app.use((req, res, next) => {
     }
     next();
 })
+
 app.use(banner_alerts)
 
 // app.use(login)
@@ -57,6 +58,8 @@ app.use(banner_alerts)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const secret = 'secret';
+app.use(cookieParser(secret))
 app.use('/', carlosRoutes, jackieRoutes, nithaRoutes, zachRoutes);
 
 //basic 404 page

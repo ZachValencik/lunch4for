@@ -5,23 +5,18 @@ let user_session = require("../middleware/logged-status");
 let auth = require("../middleware/login")
 let clear = require("../util/clear");
 let profileValidator = require('../controller/profile_validator')
-// const { request, response } = require('express');
-let options = require('../util/select_options')
-
-// let verifyAdmin = require('../controller/verify-admin-status')
-    // console.log(options.selectOption.forEach((val) => {
-    //     if('CSC' == val._value){
-    //         console.log("Was found: ", val)
-    //     }
-    // }))
+let options = require('../util/select_options');
+const { request, response } = require('express');
+let setID = require('../util/set_profile_id')
+//this function returns the total # of users that are either active or inactive
+let activeChecker = require('../controller/get_admin_data')
 module.exports = (() => {
     'use strict';
     let app = require('express').Router();
     let connection = require('../controller/connection')
 
     app.get('/', function (request, response) {
-
-
+        console.log(request.signedCookies.email)
         if (request.session.loggedin) {
             response.redirect("/home")
         } else {
@@ -39,9 +34,9 @@ module.exports = (() => {
             response.render('login')
         }
     })
+
     //sign up page
     //INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (1, 'test', 'test', 'test@test.com');
-
     let signup_handler = require("../middleware/signup_route_handler")
     app.get('/signup', signup_handler, asyncHandler(async (request, response) => {
         // console.log(request.session.invalid, request.session.valid)
@@ -59,48 +54,52 @@ module.exports = (() => {
             response.redirect("/logout")
         }
     }));
+
     //the original code inside the route was outsourced to a middleware file 
-
-
     app.post('/auth', auth, (request, response) => {
         response.redirect('/home');
     });
 
 
-//this route is used to create an account
-//it is the current action for /signup form
-//it first takes the given information and verifies that it does not exist already
-//then it creates theuser with the createUser() function 
-//it will then render the create-profile page which will contain a form to which they will fill out aditional information 
-//such as name, department , and a place to add a brief summary about themselves
-//I am debationg on wether or not to add a profile pic, in which they have an option to choose from presaved pictures as their own almost like netflix
-
+    //this route is used to create an account
+    //it is the current action for /signup form
+    //it first takes the given information and verifies that it does not exist already
+    //then it creates theuser with the createUser() function 
+    //it will then render the create-profile page which will contain a form to which they will fill out aditional information 
+    //such as name, department , and a place to add a brief summary about themselves
+    //I am debationg on wether or not to add a profile pic, in which they have an option to choose from presaved pictures as their own almost like netflix
 
     app.post('/create', asyncHandler(async (request, response) => {
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
         userInput;
         if (userInput) {
             await createUser(userInput);
-            console.log(options.selectOption)
-            response.render('create-profile', {variables : options.selectOption})
-            // response.redirect(307, '/profile-creator');
+            response.render('create-profile', { variables: options.selectOption }) // the second part populates the select box
         }
     }))
-//this will be the action for the create-profile page
-//it will store the information as a json file and place it inside the profile table 
 
-    app.post('/profile-create', (request,response) => {
-        // response.render('create-profile')
-        let user_profile = {
-            name : request.body.profile_name,
-            description : request.body.profile_desc,
-            department : request.body.department
+
+    //this will be the action for the create-profile page
+    //it will store the information as a json file and place it inside the profile table 
+    const newProfile = require('../controller/new-profile')
+    app.post('/profile-create', asyncHandler(async (request, response) => {
+        console.log(request.signedCookies.profile_email)
+        //to do => switch to useing classes for generating objects
+        let profile_package = {
+            Profile_id: await setID(request.signedCookies.profile_email),
+            Name: request.body.profile_name,
+            Team_Id: 1000,
+            Description: request.body.profile_desc,
+            Department: request.body.department
         }
-        response.json(user_profile)
-    })
+        if (newProfile) {
+            newProfile(profile_package)
+        }
+        
+        response.json(profile_package)
+    }))
 
-    //this function returns the total # of users that are either active or inactive
-    let activeChecker = require('../controller/get_admin_data')
+    
     //this is a middleware function that loads the admin homepage depending if they are admin other wise render the default page
     let admin_homepage = asyncHandler(async (request, response, next) => {
 
@@ -133,13 +132,6 @@ module.exports = (() => {
 
     });
 
-    //settings
-    //app.get("/account", user_session, user_session, (request, response) => {
-
-    //response.render("account")
-
-    //})
-
 
     //profile
     app.get("/users", user_session, (request, response) => {
@@ -147,12 +139,7 @@ module.exports = (() => {
 
     })
 
-
-    // let profile_exist = (request, response, next) {
-    //     let username = request.params.username;
-    // }
-  
-
+    //render profile
     app.get("/users/:username", asyncHandler(async (request, response) => {
         let username = request.params.username;
         let prefix = ""
@@ -168,7 +155,7 @@ module.exports = (() => {
                 prefix = "You are viewing this person's public page => ";
                 response.render('profile', { username, prefix })
             }
-            else{
+            else {
                 //make this pretty
                 response.status(400).send("This person does not exist")
             }

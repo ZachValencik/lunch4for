@@ -41,7 +41,10 @@ module.exports = (() => {
             return response.redirect('/signup')
             //response.end();
         } else {
-
+            let tempEmail = (bodyEm + "@aurora.edu")
+            response.cookie('profile_email', tempEmail, { signed: true })
+            // request.tempProfile.email = bodyEm + "@aurora.edu";
+            // console.log(">>",request.tempProfile)
             let userInput = {
                 username: bodyEm,
                 email: bodyEm + "@aurora.edu",
