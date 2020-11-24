@@ -95,11 +95,11 @@ module.exports = (() => {
         if (newProfile) {
             newProfile(profile_package)
         }
-        
+
         response.json(profile_package)
     }))
 
-    
+
     //this is a middleware function that loads the admin homepage depending if they are admin other wise render the default page
     let admin_homepage = asyncHandler(async (request, response, next) => {
 
@@ -139,21 +139,32 @@ module.exports = (() => {
 
     })
 
+    let getProfileId = require('../model/get_profile_id')
+    let getProfileData = require('../model/get_profile_data')
+
     //render profile
     app.get("/users/:username", asyncHandler(async (request, response) => {
         let username = request.params.username;
         let prefix = ""
+        // console.log(await getProfileId(username))
+        // let tempId = await getProfileId(username)
+        // console.log(await getProfileData(tempId))
         //your profile
         if (request.session.loggedin && request.session.username === username) {
             prefix = "You are viewing your profile, "
-            response.render('profile', { username, prefix })
+            let tempId = await getProfileId(username)
+            let profileData = await getProfileData(tempId)
+            console.log(profileData)
+            response.render('profile', { profileData })
         }
         //your profile to other people
         else if (request.session.loggedin && request.session.username !== username) {
             if (await profileValidator(username)) {
-
+                let tempId = await getProfileId(username)
+                // console.log(await getProfileData(tempId))
+                let profileData = await getProfileData(tempId)
                 prefix = "You are viewing this person's public page => ";
-                response.render('profile', { username, prefix })
+                response.render('profile', { profileData })
             }
             else {
                 //make this pretty
