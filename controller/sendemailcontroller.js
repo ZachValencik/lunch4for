@@ -1,9 +1,13 @@
+module.exports = (() => {
+
 var nodemailer = require('nodemailer');
 const dotenv = require('dotenv')
 dotenv.config({path:'./.env'});
 
 const connection = require('../controller/connection');
 
+//create a loop that loops the database and emails each thingy 
+connection.query('select * from accounts where active =1 and admin=0'),(error,results,fields)=>{
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -11,18 +15,21 @@ var transporter = nodemailer.createTransport({
     pass: 'lunch4four123'
   }
 }); 
-//create a loop that loops the database and emails each thingy 
+
 var mailOptions = {
   from: 'lunch4four@gmail.com',
-  to: 'zvalencik01@aurora.edu',
-  subject: 'Activate your account',
-  text: 'Activate your account! Click this link ->!!!'
+  to: results.body.email,
+  subject: 'FOr Active users only',
+  text: 'This is your monthly message blah blah' // hopefully the admin can change this message and send it out to all activate 
 };
 
 transporter.sendMail(mailOptions, function(error, info){
   if (error) {
-    console.log(error);
+    console.log('email must not exist?');
   } else {
     console.log('Email sent: ' + info.response);
   }
 });
+}
+
+})();
