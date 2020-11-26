@@ -1,11 +1,11 @@
-const { changeUser } = require('../controller/connection');
-let signupVerify = require('../controller/create-controller')
+const { changeUser } = require('../model/connection');
+let signupVerify = require('../controller/account_verify')
 const asyncHandler = require('express-async-handler')
 
 module.exports = (() => {
     //'use strict';
     let app = require('express').Router();
-    let connection = require('../controller/connection')
+    let connection = require('../model/connection')
     app.get('/jackie', function (request, response) {
         response.send('Hello Jackie');
     })

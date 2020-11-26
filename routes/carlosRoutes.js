@@ -1,21 +1,33 @@
-let createUser = require('../controller/create-user');
-let signupVerify = require('../controller/create-controller')
 const asyncHandler = require('express-async-handler')
+
+//model
+const ProfileModel = require('../model/profile_model')
+const UserModel = require("../model/accounts_model")
+//controller
+const ProfileController = require('../controller/profile_controller')
+const AdminController = require('../controller/admin_controller')
+
+
+let signupVerify = require('../controller/account_verify')
 let user_session = require("../middleware/logged-status");
 let auth = require("../middleware/login")
 let clear = require("../util/clear");
-let profileValidator = require('../controller/profile_validator')
+let admin_session = require("../middleware/admin_session")
 let options = require('../util/select_options');
-const { request, response } = require('express');
 let setID = require('../util/set_profile_id')
-//this function returns the total # of users that are either active or inactive
-let activeChecker = require('../controller/get_admin_data')
+let signup_handler = require("../middleware/signup_route_handler")
+
+
+
+
 module.exports = (() => {
     'use strict';
     let app = require('express').Router();
-    let connection = require('../controller/connection')
+    let connection = require('../model/connection')
 
-    app.get('/', function (request, response) {
+    app.get('/', asyncHandler(async function (request, response) {
+        // const user = await UserModel.create({ username: 'treeee2', password : 'test', email: 'hey2@aurora.edu' });
+    //    console.log(user)
         console.log(request.signedCookies.email)
         response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
         if (request.session.loggedin) {
@@ -23,7 +35,7 @@ module.exports = (() => {
         } else {
             response.redirect("/login")
         }
-    });
+    }));
 
 
     //log in page
@@ -38,7 +50,6 @@ module.exports = (() => {
 
     //sign up page
     //INSERT INTO `accounts` (`id`, `username`, `password`, `email`) VALUES (1, 'test', 'test', 'test@test.com');
-    let signup_handler = require("../middleware/signup_route_handler")
     app.get('/signup', signup_handler, asyncHandler(async (request, response) => {
         // console.log(request.session.invalid, request.session.valid)
         // if (request.signedCookies.signup) {
@@ -47,7 +58,7 @@ module.exports = (() => {
         //     console.log("first declared")
         //     response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
         // }
-        console.log(request.signedCookies)
+        // console.log(request.signedCookies)
         if (!request.session.loggedin) {
 
             response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
@@ -85,7 +96,8 @@ module.exports = (() => {
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
         userInput;
         if (userInput) {
-            await createUser(userInput);
+            await UserModel.create(userInput);
+            // await createUser(userInput);
             response.render('create-profile', { variables: options.selectOption }) // the second part populates the select box
         }
     }))
@@ -93,7 +105,8 @@ module.exports = (() => {
 
     //this will be the action for the create-profile page
     //it will store the information as a json file and place it inside the profile table 
-    const newProfile = require('../controller/new-profile')
+    // const newProfile = require('../controller/old_new-profile')
+    
     app.post('/profile-create', asyncHandler(async (request, response) => {
         console.log(request.signedCookies.profile_email)
         //to do => switch to useing classes for generating objects
@@ -104,23 +117,21 @@ module.exports = (() => {
             Description: request.body.profile_desc,
             Department: request.body.department
         }
-        if (newProfile) {
-            newProfile(profile_package)
+        if (profile_package) {
+            ProfileModel.create(profile_package)
+            // newProfile(profile_package)
         }
 
         response.json(profile_package)
     }))
 
-
     //this is a middleware function that loads the admin homepage depending if they are admin other wise render the default page
     let admin_homepage = asyncHandler(async (request, response, next) => {
 
         if (request.session.admin) {
-            console.log("activeChecker(1) =", activeChecker(0))
-            let current_active_members = {
-                active: await activeChecker(1),
-                inactive: await activeChecker(0)
-            }
+            // console.log("activeChecker(1) =", activeChecker(0))
+            let current_active_members = await AdminController.getActiveUsers()
+            console.log(current_active_members)
             // console.log(request.session.account)
             // console.log(current_active_members.active)
             response.render('admin-homepage', current_active_members)
@@ -151,10 +162,15 @@ module.exports = (() => {
 
     })
 
-    let getProfileId = require('../model/get_profile_id')
-    let getProfileData = require('../model/get_profile_data')
+    // let getProfileId = require('../model/get_profile_id')
+    // let getProfileData = require('../model/get_profile_data')
 
     //render profile
+    //create profile
+    app.post("/users/:username", asyncHandler(async (request, response) => {
+        response.send("hey")
+    }))
+
     app.get("/users/:username", asyncHandler(async (request, response) => {
         let username = request.params.username;
         let prefix = ""
@@ -162,7 +178,7 @@ module.exports = (() => {
         // let tempId = await getProfileId(username)
         // console.log(await getProfileData(tempId))
         //your profile
-        let tempId = await getProfileId(username)
+        let tempId = await ProfileController.getProfileId(username)
         console.log(tempId)
         let profileData = {
             _name : "TBA",
@@ -172,18 +188,18 @@ module.exports = (() => {
         if (request.session.loggedin && request.session.username === username) {
             prefix = "You are viewing your profile, "
             if (tempId){
-                profileData = await getProfileData(tempId)
+                profileData = await ProfileController.getProfileData(tempId)
            }
             console.log(profileData)
             response.render('profile', { profileData })
         }
         //your profile to other people
         else if (request.session.loggedin && request.session.username !== username) {
-            if (await profileValidator(username)) {
+            if (await UserModel.findOne({username: username})) {
                 // let tempId = await getProfileId(username)
                 // console.log(await getProfileData(tempId))
                 if (tempId){
-                     profileData = await getProfileData(tempId)
+                     profileData = await ProfileController.getProfileData(tempId)
                 }
                 prefix = "You are viewing this person's public page => ";
                 response.render('profile', { profileData })
@@ -199,7 +215,6 @@ module.exports = (() => {
         response.end();
     }))
 
-    let admin_session = require("../middleware/admin_session")
     app.get("/table", admin_session, (request, response) => {
         connection.query('SELECT * FROM accounts', function (error, results, fields) {
             response.render("table", { users: results })

@@ -1,13 +1,20 @@
 module.exports = (() => {
     const asyncHandler = require('express-async-handler')
-    let dataExist = require("./data-exist")
     let verifyPassword = require("../util/verifyPassword")
-    let connection = require("./connection")
+    const UserModel = require("../model/accounts_model")
+    // let connection = require("../model/connection")
     let genID = require('../util/id-generator')
     const bcrypt = require('bcryptjs')
     let signupVerify = asyncHandler(async (bodyEm, bodyPw, bodyPw2, request, response, next) => {
         //returns true if something went wrong
-        let email = await dataExist(bodyEm + "@aurora.edu")
+        const temp = await UserModel.find({ email : bodyEm + "@aurora.edu"})
+        let email
+        if(temp.length > 0){
+             email = true
+        }else{
+            email = false
+        }
+        // console.log(email)
         let pw = verifyPassword(bodyPw, bodyPw2)
         if (email || pw) {
             // console.log("Create level: ", email, pw)
@@ -52,9 +59,9 @@ module.exports = (() => {
             // console.log(">>",request.tempProfile)
             let userInput = {
                 username: bodyEm,
-                email: bodyEm + "@aurora.edu",
                 password: await bcrypt.hash(bodyPw,10), //hashes the pw when put inside the db
-                id: genID(connection)
+                email: bodyEm + "@aurora.edu"
+                // id: genID(connection)
 
             }
             // console.log("this is the create controller file")

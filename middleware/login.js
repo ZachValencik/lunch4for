@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
-let verifyAdmin = require('../controller/verify-admin-status')
-let connection = require('../controller/connection')
+let { verifyAdminStatus } = require('../controller/admin_controller')
+let connection = require('../model/connection')
 const bcrypt = require('bcryptjs')
 module.exports = (() => {
     let auth = function (request, response, next) {
@@ -13,7 +13,7 @@ module.exports = (() => {
                     request.session.loggedin = true;
                     if (results[0].admin === 1) {
                         console.log("I have been invoked", results[0])
-                        request.session.admin = !(await verifyAdmin(results[0]))
+                        request.session.admin = !(await verifyAdminStatus(results[0]))
                     }
                     console.log(request.session.admin)
                     //this sets up information for the home page

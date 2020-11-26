@@ -1,5 +1,5 @@
 module.exports = (() => {
-    const connection = require('../controller/connection');
+    const connection = require('../model/connection');
     const set_id = userInput => new Promise((resolve, reject) => {
         connection.query('SELECT * FROM accounts WHERE email = ?', [userInput], (error, results, fields) => {
             // console.log("data exist called lol")
