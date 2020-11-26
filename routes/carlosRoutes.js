@@ -176,8 +176,13 @@ const AccountController = require('../controller/account_controller')
     //create profile
     app.post("/users/:username", asyncHandler(async (request, response) => {
         let username = request.params.username;
+        let tempId = await ProfileController.getProfileId(request.session.username)
         if (request.session.loggedin && request.session.username === username) {
-            response.render('update-profile', { variables: options.selectOption })
+            if (tempId) {
+                const profileData = await ProfileController.getProfileData(tempId)
+                console.log(profileData)
+                response.render('update-profile', { variables: options.selectOption, profileData })
+            }
         }
         // response.send("hey")
     }))
@@ -221,7 +226,7 @@ const AccountController = require('../controller/account_controller')
                 profileData = await ProfileController.getProfileData(tempId)
             }
             console.log(profileData)
-            response.render('profile', { profileData })
+            response.render('profile', { profileData, owner: true })
         }
         //your profile to other people
         else if (request.session.loggedin && request.session.username !== username) {
@@ -232,7 +237,7 @@ const AccountController = require('../controller/account_controller')
                     profileData = await ProfileController.getProfileData(tempId)
                 }
                 prefix = "You are viewing this person's public page => ";
-                response.render('profile', { profileData })
+                response.render('profile', { profileData , owner : false})
             }
             else {
                 //make this pretty

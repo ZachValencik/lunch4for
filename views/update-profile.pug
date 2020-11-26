@@ -1,8 +1,11 @@
-h1 Create your profile
+h1 Update your profile
 form(action='/update' method='POST')
-    input(type='text' name='profile_name' placeholder='Name' required='')
-    input(type='textbox' name='profile_desc' placeholder='tell us about your self' required='')
-    select(name='department')
+    input(type='text' name='profile_name' value=profileData._name required='')
+    input(type='textbox' name='profile_desc' value=profileData._description required='')
+    select(name='department' value=profileData._department)
+        each v in variables
+            if v._value == profileData._department
+                option(value=profileData._department) #{v._dept}
         each variable in variables
             option(value=variable._value) #{variable._dept}
     input(type='submit')
