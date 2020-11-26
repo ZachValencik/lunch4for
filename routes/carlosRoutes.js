@@ -16,6 +16,8 @@ let admin_session = require("../middleware/admin_session")
 let options = require('../util/select_options');
 let setID = require('../util/set_profile_id')
 let signup_handler = require("../middleware/signup_route_handler")
+const loggedStatus = require('../middleware/logged-status')
+const { response } = require('express')
 
 
 
@@ -27,7 +29,7 @@ module.exports = (() => {
 
     app.get('/', asyncHandler(async function (request, response) {
         // const user = await UserModel.create({ username: 'treeee2', password : 'test', email: 'hey2@aurora.edu' });
-    //    console.log(user)
+        //    console.log(user)
         console.log(request.signedCookies.email)
         response.cookie('signup', { both: false, email: false, password: false }, { signed: true })
         if (request.session.loggedin) {
@@ -89,16 +91,17 @@ module.exports = (() => {
     //it will then render the create-profile page which will contain a form to which they will fill out aditional information 
     //such as name, department , and a place to add a brief summary about themselves
     //I am debationg on wether or not to add a profile pic, in which they have an option to choose from presaved pictures as their own almost like netflix
-
+    // let profileData = require('../util/profile_data')
     app.post('/create', asyncHandler(async (request, response) => {
         response.clearCookie('signup')
-        console.log("create level" ,request.signedCookies)
+        console.log("create level", request.signedCookies)
         let userInput = await signupVerify(request.body.email, request.body.password, request.body.passwordRetype, request, response)
         userInput;
         if (userInput) {
-            await UserModel.create(userInput);
-            // await createUser(userInput);
+            await UserModel.create(userInput)
+           
             response.render('create-profile', { variables: options.selectOption }) // the second part populates the select box
+            // await createUser(userInput);
         }
     }))
 
@@ -106,19 +109,19 @@ module.exports = (() => {
     //this will be the action for the create-profile page
     //it will store the information as a json file and place it inside the profile table 
     // const newProfile = require('../controller/old_new-profile')
-    
+const AccountController = require('../controller/account_controller')
     app.post('/profile-create', asyncHandler(async (request, response) => {
         console.log(request.signedCookies.profile_email)
+        // await ProfileController.createDefault(request.body.email)
         //to do => switch to useing classes for generating objects
         let profile_package = {
-            Profile_id: await setID(request.signedCookies.profile_email),
             Name: request.body.profile_name,
             Team_Id: 1000,
             Description: request.body.profile_desc,
             Department: request.body.department
         }
         if (profile_package) {
-            ProfileModel.create(profile_package)
+            ProfileModel.update(profile_package, await AccountController.getID(request.signedCookies.profile_email))
             // newProfile(profile_package)
         }
 
@@ -161,6 +164,10 @@ module.exports = (() => {
         response.redirect(`/users/${request.session.username}`)
 
     })
+    app.post("/users", user_session, (request, response) => {
+        response.redirect(307, `/users/${request.session.username}`)
+
+    })
 
     // let getProfileId = require('../model/get_profile_id')
     // let getProfileData = require('../model/get_profile_data')
@@ -168,8 +175,31 @@ module.exports = (() => {
     //render profile
     //create profile
     app.post("/users/:username", asyncHandler(async (request, response) => {
-        response.send("hey")
+        let username = request.params.username;
+        if (request.session.loggedin && request.session.username === username) {
+            response.render('update-profile', { variables: options.selectOption })
+        }
+        // response.send("hey")
     }))
+    app.post("/update", asyncHandler(async (request, response) =>{
+        // console.log(request.signedCookies.profile_email)
+        // await ProfileController.createDefault(request.body.email)
+        //to do => switch to useing classes for generating objects
+        let profile_package = {
+            Name: request.body.profile_name,
+            Description: request.body.profile_desc,
+            Department: request.body.department
+        }
+        const userID = await AccountController.getID_UN(request.session.username)
+        if (profile_package) {
+        
+         await ProfileModel.update(profile_package, userID  )
+            // newProfile(profile_package)
+        }
+        response.redirect("/users")
+        // response.json(profile_package)
+
+    } ))
 
     app.get("/users/:username", asyncHandler(async (request, response) => {
         let username = request.params.username;
@@ -181,25 +211,25 @@ module.exports = (() => {
         let tempId = await ProfileController.getProfileId(username)
         console.log(tempId)
         let profileData = {
-            _name : "TBA",
-            _description : "TBA",
+            _name: "TBA",
+            _description: "TBA",
             _department: "TBA"
         }
         if (request.session.loggedin && request.session.username === username) {
             prefix = "You are viewing your profile, "
-            if (tempId){
+            if (tempId) {
                 profileData = await ProfileController.getProfileData(tempId)
-           }
+            }
             console.log(profileData)
             response.render('profile', { profileData })
         }
         //your profile to other people
         else if (request.session.loggedin && request.session.username !== username) {
-            if (await UserModel.findOne({username: username})) {
+            if (await UserModel.findOne({ username: username })) {
                 // let tempId = await getProfileId(username)
                 // console.log(await getProfileData(tempId))
-                if (tempId){
-                     profileData = await ProfileController.getProfileData(tempId)
+                if (tempId) {
+                    profileData = await ProfileController.getProfileData(tempId)
                 }
                 prefix = "You are viewing this person's public page => ";
                 response.render('profile', { profileData })

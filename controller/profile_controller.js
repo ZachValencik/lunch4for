@@ -5,8 +5,8 @@ class ProfileController {
 
     getProfileData = async (accountId) => {
 
-        const p_data = await ProfileModel.findOne({Profile_id : accountId})
-        if(p_data){
+        const p_data = await ProfileModel.findOne({ Profile_id: accountId })
+        if (p_data) {
             let r = new profileData(
                 p_data.Name,
                 p_data.Description,
@@ -18,14 +18,30 @@ class ProfileController {
     }
 
     getProfileId = async (un) => {
-        const exist = await AccountModel.findOne({username : un})
+        const exist = await AccountModel.findOne({ username: un })
         return exist.id
 
     }
 
-    
-   
+    createDefault = async (email) => {
+        if (await AccountModel.findOne({ email: email })) {
+            console.log("default created")
+            const userId = await AccountModel.findOne({ email: email })
+            console.log(userId)
+            let defaultProfile = new profileData(
+                userId.id,
+                "TBA",
+                1000,
+                "TBA",
+                "TBA"
+            )
 
+            await ProfileModel.create(defaultProfile)
+        }
+
+
+
+    }
 
 }
 

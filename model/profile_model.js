@@ -5,6 +5,7 @@
 //update
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../util/common.utils');
+const { setmultipleColumnSet } = require('../util/uncommon.utils');
 // const Role = require('../utils/userRoles.utils');
 class UserModel {
     tableName = 'profile';
@@ -45,11 +46,12 @@ class UserModel {
 
         return affectedRows;
     }
-    //Jackie can use this
     update = async (params, id) => {
-        const { columnSet, values } = multipleColumnSet(params)
+        const { columnSet, values } = setmultipleColumnSet(params)
 
-        const sql = `UPDATE user SET ${columnSet} WHERE Profile_id = ?`;
+        console.log(columnSet)
+        console.log(values)
+        const sql = `UPDATE profile SET ${columnSet} WHERE Profile_id = ?`;
 
         const result = await query(sql, [...values, id]);
 

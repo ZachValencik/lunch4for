@@ -6,6 +6,7 @@
 const asyncHandler = require('express-async-handler')
 const query = require('../db/db-connection');
 const { multipleColumnSet } = require('../util/common.utils');
+const { setmultipleColumnSet } = require('../util/uncommon.utils');
 // const Role = require('../utils/userRoles.utils');
 class UserModel {
     tableName = 'accounts';
@@ -50,9 +51,9 @@ class UserModel {
     }
     //Jackie can use this
     update = async (params, id) => {
-        const { columnSet, values } = multipleColumnSet(params)
+        const { columnSet, values } = setmultipleColumnSet(params)
 
-        const sql = `UPDATE user SET ${columnSet} WHERE id = ?`;
+        const sql = `UPDATE accounts SET ${columnSet} WHERE id = ?`;
 
         const result = await query(sql, [...values, id]);
 
