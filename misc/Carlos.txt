@@ -122,3 +122,69 @@ I added this line-Zach
     //         response.end();
     //     }
     // }));
+     // let username = request.params.username;
+        // // let prefix = ""
+
+        // let ID = await AccountController.getID_UN(username)
+        // console.log('id:' , ID)
+        // let tempPro = await ProfileController.getProfileData(ID)
+        // console.log(tempPro)
+        // if(!tempPro){
+        //     // tempID = await AccountController.getID_UN(username)
+        //     ProfileController.createDefault(ID)
+        // }
+        // console.log('temp:',tempPro)
+        
+        // response.send('hey')
+
+         // let profileData = {
+        //     _name: "TBA",
+        //     _description: "TBA",
+        //     _department: "TBA"
+        // }
+        // if (request.session.loggedin && request.session.username === username) {
+        //     // prefix = "You are viewing your profile, "
+        //     if (tempId) {
+        //         let temp = await ProfileController.getProfileData(tempId)
+        //         console.log(temp)
+        //         profileData = temp
+        //     }
+        //     console.log(profileData)
+        //     response.render('profile', { profileData, owner: true })
+        // }
+        // //your profile to other people
+        // else if (request.session.loggedin && request.session.username !== username) {
+        //     if (await UserModel.findOne({ username: username })) {
+        //         // let tempId = await getProfileId(username)
+        //         // console.log(await getProfileData(tempId))
+        //         if (tempId) {
+        //             profileData = await ProfileController.getProfileData(tempId)
+        //         }
+        //         // prefix = "You are viewing this person's public page => ";
+        //         response.render('profile', { profileData , owner : false})
+        //     }
+        //     else {
+        //         //make this pretty
+        //         response.status(400).send("This person does not exist")
+        //     }
+
+        // } else {
+        //     response.redirect("/restricted")
+        // }
+        // response.end();
+
+        
+    // app.get("/table", admin_session, (request, response) => {
+    //     connection.query('SELECT * FROM accounts', function (error, results, fields) {
+    //         response.render("table", { users: results })
+    //     })
+    // })
+
+    // app.get("/admin-list", admin_session, (request, response) => {
+    //     connection.query('SELECT * FROM admin', function (error, results, fields) {
+    //         // console.log(res)
+    //         response.render("admin-table", { users: results })
+    //         //  response.send(fields)
+    //     })
+
+    // })

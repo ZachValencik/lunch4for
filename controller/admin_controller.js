@@ -24,6 +24,13 @@ class AdminController {
         }
 
     }
+    admin_session = async (request, response, next) => {
+        if (request.session.loggedin && request.session.admin) {
+            return next()
+        } else {
+            return response.redirect("/restricted")
+        }
+    }
 
 
 }
