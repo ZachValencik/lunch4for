@@ -1,26 +1,23 @@
 //all the required Modules
 // const debug = require('debug')('app')
-const asyncHandler = require('express-async-handler')
-const mysql = require('mysql');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const path = require('path');
-const { response, request } = require('express');
 //this connects to your own file where all your routes are created
 let carlosRoutes = require('./routes/carlosRoutes');
 let jackieRoutes = require('./routes/jackieRoutes');
 let nithaRoutes = require('./routes/nithaRoutes');
 let zachRoutes = require('./routes/zachRoutes');
-let login = require('./middleware/login');
+let adminRoutes = require('./routes/admin');
+// let login = require('./middleware/login');
 const banner_alerts = require('./middleware/banner_alerts');
-
+var cookieParser = require('cookie-parser')
 let app = express();
 app.set('view engine', 'pug')
 app.use(express.static('public'))
 
 //express sessions: uses cookies to know who is logged in or not
-//middleware
+//middleware{}
 app.use(session({
     secret: 'secret',
     resave: true,
@@ -32,32 +29,18 @@ app.use(function (req, res, next) {
     if (!req.session.admin) {
         req.session.admin = false
     }
-
-
-    // get the url pathname
-    // var pathname = parseurl(req).pathname
-
-    // count the views
-    // req.session.views[pathname] = (req.session.views[pathname] || 0) + 1
-
     next()
 })
 
-app.use((req, res, next) => {
-    if (!req.session.user_info) {
-        req.session.user_info = {}
-        // request.signup.both = false
-    }
-    next();
-})
-app.use(banner_alerts)
-
-// app.use(login)
-//not sure about this part but it works
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+//used for banners
+app.use(banner_alerts)
+const secret = 'secret';
+app.use(cookieParser(secret))
 
-app.use('/', carlosRoutes, jackieRoutes, nithaRoutes, zachRoutes);
+
+app.use('/', carlosRoutes, jackieRoutes, nithaRoutes, zachRoutes, adminRoutes);
 
 //basic 404 page
 app.get('*', (request, response) => {
@@ -68,6 +51,7 @@ app.get('*', (request, response) => {
 app.listen(3000, function () {
     console.log('The page is live on http://localhost:3000/');
 });
+
 
 //TO DO 
 //to do public page

@@ -3,12 +3,12 @@ include ./header.pug
 body
     include ./nav.pug
     .container
-        h1  #{prefix} #{username}
-        ul 
-            li display the persons name
-            li contact info
-            li a small blurb about the user
-            li if they are logged in they should see an button to edit their profile
-            li maybe a profile picture? tba
-        p TO DO: verify that the url/given username exist otherwise redirect to 404 page
+        h1.white Name:  #{profileData._name}
+        div.col-sm-auto.py-3.white
+            p Description: #{profileData._description}
+            p Department: #{profileData._department}
+        if owner 
+            form(action='/users' method='POST')
+                input(type="submit" value="Edit") 
+
 
