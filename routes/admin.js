@@ -6,23 +6,56 @@ module.exports = (() => {
 
     //these are the routes for the admin pages
     let app = require('express').Router();
-
+    //this is going to be the dashboard
+    //the log in page will redirect you here if your an admin
+    //pie chart of all active users
+    
     app.get('/admin',  AdminController.admin_session,(request, response) => {
 
         response.send("This is the admin page")
     }
     )
 
-    
+    //this will display a list of all users
+    //maybe give the ability to activate or deactivate
     app.get("/admin/users", AdminController.admin_session, asyncHandler(async  (request, response) => {
-        const allUsers = await AccountModel.find()
+        const allUsers = await AccountModel.find({ admin : 0})
 
         if(allUsers){
-            console.log(allUsers)
             response.render("table", { users: allUsers })
         }
 
     }))
+
+    app.get("/admin/edit", AdminController.admin_session, asyncHandler(async  (request, response) => {
+        const allUsers = await AccountModel.find({admin : 0})
+
+        if(allUsers){
+            response.render("user_table_edit", { users: allUsers })
+        }
+
+    }))
+
+    ///save-user-settings
+const formatActivity = require('../util/formatActivity')
+    app.post("/save-user-settings", asyncHandler(async  (request, response) => {
+
+        // console.log(request.body.id)
+        console.log(request.body)
+        // await AdminController.updateActivity(request.body.id , request.body.active)
+        let list = formatActivity( request.body.id , request.body.active)
+        response.send(list)
+        
+
+    }))
+    //this will display all admins 
+    //give the ability to become or strip admin based on their role
+    //full admin --- give / take admin level | manipulate users
+    //owner -- same are 
+    //super user --- manipulate users | view other admins (no control)
+    //regular user -- use the website as intended
+
+
 
     app.get("/admin/admins", AdminController.admin_session, asyncHandler(async  (request, response) => {
         const allUsers = await AccountModel.find({admin : 1})

@@ -1,0 +1,31 @@
+doctype html
+html(lang='en')
+    include ./header.pug
+    body
+        include ./nav.pug
+        .container
+            h1 For admin eyes only
+            form( action='/save-user-settings' method='POST')
+                table.table.table-dark
+                    tr
+                        thead.thead-dark
+                            th ID
+                            th Username
+                            th Email
+                            th Status
+                    each u in users
+                        tr
+                            td= u.id
+                                input(type='hidden' name='id' value=u.id)
+                            td= u.username
+                            td= u.email
+                            td 
+                                label.switch
+                                    if u.active > 0
+                                        input(type='checkbox' value='1' name='active' checked)
+                                    else if u.active == 0
+                                        input(type='checkbox' value='1' name='active')
+                                        input(type='hidden' value='0' name='active')
+                                    span.slider.round
+                button.btn.btn-primary.btn-lg(type='submit') Save Changes
+                button.btn.btn-secondary.btn-lg(type='button') Cancel
