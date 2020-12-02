@@ -8,6 +8,7 @@ const { response } = require('express');
 const account_controller = require('../controller/account_controller');
 const accounts_model = require('../model/accounts_model');
 
+const bcrypt = require('bcryptjs') // this makes it so you can get the hashed and salted password
 module.exports = (() => {
     //'use strict';
     let app = require('express').Router();
@@ -37,7 +38,7 @@ module.exports = (() => {
         let update_info = {
             username: request.body.username,
             email: request.body.email,
-            password: request.body.password
+            password: await bcrypt.hash(request.body.password,10) // Here is is jackie
         }
         if(info) {
             await accounts_model.update(update_info, request.session.user_id)
