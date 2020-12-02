@@ -8,8 +8,9 @@ head
     style.
       .switch {
       position: absolute;
-      left: 400px;
-      margin-top: 30px;
+      /*margin-left: 880px;
+      margin-top: 60px;
+      display: inline-block;*/
       width: 90px;
       height: 34px;
       }
@@ -69,22 +70,11 @@ head
         input:checked + .slider:after {  
         content:'ON';
         }
-        p { 
+        label{
             color: white;
             font-family: "Roboto", sans-serif;
             text-transform: uppercase;
             font-size: 20px;
-            position:relative; 
-            left:-210px;
-            letter-spacing: 1px;
-        }
-         label { 
-            color: white;
-            font-family: "Roboto", sans-serif;
-            text-transform: uppercase;
-            font-size: 20px;
-            position:relative; 
-            left:-220px;
             letter-spacing: 1px;
         }
       
@@ -95,30 +85,36 @@ body
         div.col-sm-auto.py-3
             div.row
             label.switch
-                input(type="checkbox" checked="")
+                if info.active > 0
+                    input(type='checkbox' value='1' name='active' checked)
+                else if info.active == 0
+                    input(type='checkbox' value='1' name='active')
+                    input(type='hidden' value='0' name='active')
                 span.slider.round
             br
             br
-            form(action="/account", method="POST")
+            form(action="/account/update", method="POST")
+                div.row.mb-1
+                    //div.col-sm-6.text-left
+                        label(for="id") ID
+                    //div.col-sm-6
+                        input(type="hidden" name="id" value=info.id)
                 div.row.mb-1
                     div.col-sm-6.text-right
-                    label(for="id") ID:
-                    p #{info.id}
-                    div.col-sm-6
+                        label(for="username") Username:
+                    div.col-sm-6.text-left
+                        input(name="username" value=info.username)
                 div.row.mb-1
                     div.col-sm-6.text-right
-                    label(for="username") Username:
-                    p #{info.username}
+                        label(for="email") Email:
                     div.col-sm-6.text-left
+                        input(name="email" value=info.email)
                 div.row.mb-1
                     div.col-sm-6.text-right
-                    label(for="email") Email:
-                    p #{info.email}
+                        label(for="password") Password:
                     div.col-sm-6.text-left
-                div.row.mb-1
-                    div.col-sm-6.text-risght
-                    label(for="password") Password:
-                    p #{info.password}
-                    div.col-sm-6.text-left
+                        input(name="password")
 
-                button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Edit
+                button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Save Changes
+                a#cancel.btn.form(href='/account/:id', name='cancel', style='margin:5px;')  Cancel 
+

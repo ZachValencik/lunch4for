@@ -1,60 +1,50 @@
 const { changeUser } = require('../model/connection');
 let signupVerify = require('../controller/account_verify')
-const asyncHandler = require('express-async-handler')
+//middleware, checks if you're signed in
+let user_session = require("../middleware/logged-status");
+const asyncHandler = require('express-async-handler');
+
+const { response } = require('express');
+const account_controller = require('../controller/account_controller');
+const accounts_model = require('../model/accounts_model');
 
 module.exports = (() => {
     //'use strict';
     let app = require('express').Router();
     let connection = require('../model/connection')
-    app.get('/jackie', function (request, response) {
-        response.send('Hello Jackie');
-    })
-    app.get("/account", (request, response) => {
-        if (request.session.loggedin) {
-            console.log("This is the jackieroutes",request.accounts.info);
-            let info = request.accounts.info
-            response.render("account",{info});
-        } else {
-            response.redirect("/restricted")
-        }
-        response.end(); 
-             
+    app.get("/account",user_session, (request, response) => {
+           response.redirect(`/account/${request.session.user_id}`);
+
         });
-    app.get("/accounts/:id",function(req,res){
-
-        connection.query("SELECT * FROM accounts WHERE id=?",[req.params.id],(err,results,fields)=> {
-            if(!err) {
-            
-            req.accounts.info = JSON.stringify(results[0]);
-
-            //request.accounts = results[0];
-            console.log("This is the login accounts:",req.accounts.info);
-            res.json(req.accounts.info)
-            } else {
-            consol.log(err);
-            }
-        })
-    });
+    app.get("/account/:id",user_session, asyncHandler(async function(request,response){
+        let info = await accounts_model.findOne({id : request.session.user_id})
+        console.log(request.session.user_id)
+        response.render("account",{info});
+    }));
     const bodyParser = require('body-parser') 
     app.use( bodyParser.urlencoded({extended:true}));
-   //app.post("/postChanges", function(request,response) {
-     //  response.send(`USERNAME:${request.body.username} EMAIL:${request.body.email} PASSWORD:${request.body.password}`)  
-      //});
-    app.post('/update', function(req,res) {
-        //let username = request.body.username;
-        //let email = request.body.email;
-        //let password = request.body.password;
-        //let id = request.body.id;
-        console.log(req.body.username);
-        //console.log(req.body.email);
-        //console.log(req.body.password);
-
-       connection.query("UPDATE accounts SET username='"+req.body.username+"'WHERE id='"+req.body.id+"'",function(err,result) {
-        //connection.query("UPDATE accounts SET username='"+req.body.username+",email='"+req.body.email+",password='"+req.body.password+"'WHERE id='"+req.body.id+"'",function(err,result) {
-        //connection.query("UPDATE accounts SET username=?,email=?,password=? WHERE id=?",[username,email,password,id],function(err,results){
-            if(err) throw err;
-            else res.send('Succesfully Updated ID:'+req.body.id);
-        });
-    })
+   
+    app.post('/account',user_session, asyncHandler(async function(request,response) {
+        let info = await accounts_model.findOne({id : request.session.user_id})
+       response.render("account-edit",{info});
+    }))
+    app.post("/account/update",user_session,asyncHandler(async function(request,response) {
+        let info = await accounts_model.findOne({id : request.session.user_id})
+        if (request.body.password == "") {
+            request.body.password = info.password
+        }
+        //ask zach to how to encrypt the changed password and also how to decrypt when a user is logged in
+        let update_info = {
+            username: request.body.username,
+            email: request.body.email,
+            password: request.body.password
+        }
+        if(info) {
+            await accounts_model.update(update_info, request.session.user_id)
+        }
+        console.log(info.password);
+        response.send(update_info);
+    }));
     return app;
+    
 })();
