@@ -53,7 +53,7 @@ class UserModel {
     update = async (params, id) => {
         const { columnSet, values } = setmultipleColumnSet(params)
 
-        const sql = `UPDATE accounts SET ${columnSet} WHERE id = ?`;
+        const sql = `UPDATE ${this.tableName} SET ${columnSet} WHERE id = ?`;
 
         const result = await query(sql, [...values, id]);
 
