@@ -1,14 +1,15 @@
 doctype html
 head
-    //include ./bootstrapScript.pug
+    include ./bootstrapScript.pug
     include ./header.pug 
     meta(name="viewport" content="width=device-width, initial-scale=1")
+    style 
+        include ../public/css/style.css
     style.
       .switch {
       position: absolute;
-      /*margin-left: 880px;
-      margin-top: 60px;
-      display: inline-block;*/
+      left: 400px;
+      margin-top: 30px;
       width: 90px;
       height: 34px;
       }
@@ -31,16 +32,16 @@ head
       .slider:before {
       position: absolute;
       content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
+      height: 28px;/*Changes height of slider*/
+      width: 28px; /*Changes width of slider*/
+      left: 4px; /*Moves the slider to the left*/
+      bottom: 4px;/*Moves the slider up/down within the outside box*/
+      background-color: white; /*Color of text*/
       -webkit-transition: .4s;
-      transition: .4s;
+      transition: .4s; /*Speed of slider*/
       }
       input:checked + .slider {
-      background-color: dodgerblue;
+      background-color: #535b63; /*Color of "ON"*/
       }
       input:checked + .slider:before {
       -webkit-transform: translateX(26px);
@@ -60,19 +61,30 @@ head
         display: block;
         position: absolute;
         transform: translate(-50%,-50%);
-        top: 50%;
-        left: 50%;
+        top: 50%; /*Moves text up/down*/
+        left: 50%; /*Moves text left/right*/
         font-size: 10px;
         font-family: Verdana, sans-serif;
         }
         input:checked + .slider:after {  
         content:'ON';
         }
-        label{
+        p { 
             color: white;
             font-family: "Roboto", sans-serif;
             text-transform: uppercase;
             font-size: 20px;
+            position:relative; 
+            left:-210px;
+            letter-spacing: 1px;
+        }
+         label { 
+            color: white;
+            font-family: "Roboto", sans-serif;
+            text-transform: uppercase;
+            font-size: 20px;
+            position:relative; 
+            left:-220px;
             letter-spacing: 1px;
         }
       
@@ -87,28 +99,26 @@ body
                 span.slider.round
             br
             br
-            form(action="accounts", method="POST")
-            form(action="update", method="POST")
+            form(action="/account", method="POST")
                 div.row.mb-1
                     div.col-sm-6.text-right
-                        label(for="id") ID:
+                    label(for="id") ID:
+                    p #{info.id}
                     div.col-sm-6
-                        input(type="hidden" name="id" value="1")
                 div.row.mb-1
                     div.col-sm-6.text-right
-                        label(for="username") Username:
+                    label(for="username") Username:
+                    p #{info.username}
                     div.col-sm-6.text-left
-                        input(name="username" value="test")
                 div.row.mb-1
                     div.col-sm-6.text-right
-                        label(for="email") Email:
+                    label(for="email") Email:
+                    p #{info.email}
                     div.col-sm-6.text-left
-                        input(name="email" value="test@aurora.edu")
                 div.row.mb-1
-                    div.col-sm-6.text-right
-                        label(for="password") Password:
+                    div.col-sm-6.text-risght
+                    label(for="password") Password:
+                    p #{info.password}
                     div.col-sm-6.text-left
-                        input(name="password" value="test")
 
-                button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Save Changes
-                button.btn.form(type="reset" style="margin:5px;") Cancel
+                button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Edit

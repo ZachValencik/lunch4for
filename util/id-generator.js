@@ -1,6 +1,6 @@
 module.exports = (() => {
 
-    let connection = require('../controller/connection')
+    let connection = require('../model/connection')
     //creates a random 5 digit int based on the time
     let genId = () => {
         let id = ((Date.now() / 1000000 % 1).toFixed(5) * 100000)
