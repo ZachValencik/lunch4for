@@ -74,6 +74,7 @@ module.exports = (() => {
     //such as name, department , and a place to add a brief summary about themselves
     //I am debationg on wether or not to add a profile pic, in which they have an option to choose from presaved pictures as their own almost like netflix
     let profileFormatter = require('../util/profile_data')
+    
     app.post('/create', asyncHandler(async (request, response) => {
         response.clearCookie('signup')
         // console.log("create level", request.signedCookies)
@@ -208,6 +209,7 @@ module.exports = (() => {
         response.status(400).send("Permision denied") //make a pug file
         response.end();
     })
+
 
 
 
