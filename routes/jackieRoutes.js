@@ -3,7 +3,6 @@ let signupVerify = require('../controller/account_verify')
 //middleware, checks if you're signed in
 let user_session = require("../middleware/logged-status");
 const asyncHandler = require('express-async-handler');
-
 const { response } = require('express');
 const account_controller = require('../controller/account_controller');
 const accounts_model = require('../model/accounts_model');
@@ -46,6 +45,13 @@ module.exports = (() => {
         console.log(info.password);
         response.send(update_info);
     }));
+   // app.get("/meeting/:team_id", user_session, asyncHandler(async function(request,response) {
+
+    //}));
+    app.get('/meeting/leader', (request, response) => {
+        response.render('meeting-leader');
+    });
+
     return app;
     
 })();
