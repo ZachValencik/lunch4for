@@ -10,6 +10,18 @@ const { setmultipleColumnSet } = require('../util/uncommon.utils');
 class MeetingModel {
     profileTable = 'profile';
 
+    findMeeting = async (params) => {
+        const { columnSet, values } = multipleColumnSet(params)
+
+        const sql = `SELECT Team_Id, Leader, Meet_Location,
+         DATE_FORMAT(Meet_Date, '%m/%d/%Y') AS "Meet_Date",
+         DATE_FORMAT(Meet_Time, '%h:%i %p') AS "Meet_Time"
+         FROM team WHERE ${columnSet}`;
+
+        const result = await query(sql, [...values]);
+        return result;
+    }
+
     //uses profile id to find the team_id using the profile table
     //returns a team_id
     findTeamID = async (params) => {

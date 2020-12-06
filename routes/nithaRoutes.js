@@ -31,16 +31,22 @@ module.exports = (() => {
         let info = request.session;
     
         if(request.session.loggedin){
-            let tId = await MeetingController.getMeetingID(request.session.account.id);
-            if (tId) {
-                const meetingData = await MeetingController.getMeetingData(tId.Team_Id)
-                //console.log('Meeting Data: ', meetingData);
+            //gets the users info from profile table
+            let userInfo = await MeetingController.getUserInfo(request.session.account.id);
+
+            if (userInfo) {
+                const groupData = await MeetingController.getGroupData(userInfo.Team_Id)
+                //console.log('Got list of everyone in same group: ', groupData);
+
+                const meetingData = await MeetingController.getMeetingData(userInfo.Team_Id);
+                //console.log('Got the meetingData: ', meetingData);
+
                 let leader = false;
-                if(tId.Leader == 1){
+                if(userInfo.Leader == 1){
                     //if user is leader then it displays after lunch summary button in meeting page
                     leader = true;
                 }
-                response.render('meeting', { info, leader, Group: meetingData });
+                response.render('meeting', { info, leader, Group: groupData, Meeting: meetingData });
             } 
         } else{
             response.redirect('/login');
