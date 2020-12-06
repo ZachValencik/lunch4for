@@ -1,11 +1,32 @@
-h1 Update your profile
-form(action='/update' method='POST')
-    input(type='text' name='profile_name' value=profileData._name required='')
-    input(type='textbox' name='profile_desc' value=profileData._description required='')
-    select(name='department' value=profileData._department)
-        each v in variables
-            if v._value == profileData._department
-                option(value=profileData._department) #{v._dept}
-        each variable in variables
-            option(value=variable._value) #{variable._dept}
-    input(type='submit')
+doctype html
+head
+  meta(charset='utf-8')
+  title Lunch-4-Four | Profile
+  include ./bootstrap.pug
+  style
+    include ../public/css/style.css  
+  include ./navSignup.pug
+body
+    .container
+        h1 Update your profile
+        .jumbotron
+            form(action='/update' method='POST')
+                .form-group
+                    //- input(type='text' name='profile_name' value=profileData._name required='')
+                    label(for='profile_name') Name
+                    input(type='text' class="form-control" name='profile_name' id='profile_name' value=profileData._name required='')
+                .form-group
+                    label(for='profile_desc') About
+                    //- input(type='textbox' name='profile_desc' value=profileData._description required='')
+                    textarea(class="form-control" name='profile_desc' id='profile_desc' required='' maxlength="244",  rows="3") #{profileData._description}
+                label(for='department') Department
+                //- select.form-control.form-control-lg.mb-5(name='department' id='department')
+                //-     each variable in variables
+                //-         option(value=variable._value) #{variable._dept}
+                select.form-control.mb-5(name='department' value=profileData._department)
+                    each v in variables
+                        if v._value == profileData._department
+                            option(value=profileData._department) #{v._dept}
+                    each variable in variables
+                        option(value=variable._value) #{variable._dept}
+                input(type='submit' class='btn btn-primary')

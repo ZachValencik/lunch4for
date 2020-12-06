@@ -90,6 +90,10 @@ module.exports = (() => {
         }
     }))
 
+    app.get('/test', (request, response) => {
+        response.render('create-profile', { variables: options.selectOption })
+    })
+
 
     //this will be the action for the create-profile page
     //it will store the information as a json file and place it inside the profile table 

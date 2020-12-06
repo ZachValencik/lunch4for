@@ -1,8 +1,24 @@
-h1 Create your profile
-form(action='profile-create' method='POST')
-    input(type='text' name='profile_name' placeholder='Name' required='')
-    input(type='textbox' name='profile_desc' placeholder='tell us about your self' required='')
-    select(name='department')
-        each variable in variables
-            option(value=variable._value) #{variable._dept}
-    input(type='submit')
+doctype html
+head
+  meta(charset='utf-8')
+  title Lunch-4-Four | Profile
+  include ./bootstrap.pug
+  style
+    include ../public/css/style.css  
+  include ./navSignup.pug
+body
+    .container
+        h1 Create your profile
+        .jumbotron
+            form(action='profile-create' method='POST')
+                .form-group
+                    //- label.col-sm-2.col-form-label(for='profile_name') Name
+                    input(type='text' class="form-control" name='profile_name' id='profile_name' placeholder='Name' required='')
+                .form-group
+                    //- label.col-sm-2.col-form-label(for='profile_desc') Drescribe Yourself
+                    textarea(class="form-control" name='profile_desc' id='profile_desc' placeholder='tell us about your self' required='' maxlength="50",  rows="3")
+                label(for='department') Department
+                select.form-control.form-control-lg.mb-5(name='department' id='department')
+                    each variable in variables
+                        option(value=variable._value) #{variable._dept}
+                input(type='submit' class='btn btn-primary')
