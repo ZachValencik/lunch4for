@@ -33,6 +33,13 @@ class AccountController {
         }
         return user.id
     }
+    getUsernameById = async (input_id) => {
+        const user = await AccountModel.findOne({ id: input_id });
+        if (!user) {
+            throw new HttpException(404, 'User not found');
+        }
+        return user.username
+    }
     //check if user exist with username
     userExist = async (request, response, next) => {
         let username = request.params.username;
