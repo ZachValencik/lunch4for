@@ -113,7 +113,8 @@ module.exports = (() => {
             // newProfile(profile_package)
         }
         // response.redirect(307 , '/success')
-        response.json(profile_package)
+        response.redirect(307, '/success')
+        // response.json(profile_package)
     }))
     //move to admin-controller file
     //this is a middleware function that loads the admin homepage depending if they are admin other wise render the default page
