@@ -81,6 +81,18 @@ h1.white{
 .navbar {
   background-color: rgb(25, 34, 41);
 }
+table{
+  color: white;
+  border: 1px solid white;
+}
+thead, th{
+  border: 1px solid white;
+  background: darkgray;
+  color:black;
+}
+tr,td{
+  border: 1px solid white;
+}
 .white{
   color: white;
 }

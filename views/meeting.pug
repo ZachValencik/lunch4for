@@ -1,0 +1,33 @@
+doctype html
+include ./header.pug
+body
+    include ./nav.pug
+    .container
+        .row
+            div(class='col-sm login')
+                h1 Meeting Group
+                hr
+                table.table.table-striped
+                    thead
+                        th Name
+                        th E-Mail
+                        th Leader
+                    
+                    tbody
+                        tr 
+                            td John Doe
+                            td jdoe@aurora.edu
+                            td Leader
+                        tr
+                            td Tom Smith
+                            td tsmith@aurora.edu
+                            td 
+
+            //Section for login form
+            div(class='col-sm login')
+                h1 Meeting Detail for #{info.username}
+                p.white Date: 
+                p.white Time:
+                p.white Location:
+                div(id='calendar')
+    include ./bootstrapScript.pug      
