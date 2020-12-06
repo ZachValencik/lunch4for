@@ -4,12 +4,12 @@ module.exports = (() => {
 
         if (request.accounts === undefined) {
             request.accounts = {}
-            console.log("This is account after",request.accounts);
+            //console.log("This is account after",request.accounts);
 
         }
         if (request.accounts === undefined) {
             request.accounts.info= {}
-            console.log("This is account.info",request.accounts);
+            //console.log("This is account.info",request.accounts);
 
         }
         next();

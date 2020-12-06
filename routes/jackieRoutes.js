@@ -1,11 +1,14 @@
+const { response } = require('express');
+//async
+const asyncHandler = require('express-async-handler');
+//model
 const { changeUser } = require('../model/connection');
-let signupVerify = require('../controller/account_verify')
+const accounts_model = require('../model/accounts_model');
 //middleware, checks if you're signed in
 let user_session = require("../middleware/logged-status");
-const asyncHandler = require('express-async-handler');
-const { response } = require('express');
+//controller
+let signupVerify = require('../controller/account_verify')
 const account_controller = require('../controller/account_controller');
-const accounts_model = require('../model/accounts_model');
 
 const bcrypt = require('bcryptjs') // this makes it so you can get the hashed and salted password
 module.exports = (() => {
@@ -45,12 +48,14 @@ module.exports = (() => {
         console.log(info.password);
         response.send(update_info);
     }));
-   // app.get("/meeting/:team_id", user_session, asyncHandler(async function(request,response) {
-
-    //}));
-    app.get('/meeting/leader', (request, response) => {
+    //app.get('/meeting/leader/:team_id', (request, response) => {
+    app.get('/meeting/leader/', (request, response) => {
         response.render('meeting-leader');
     });
+    app.get('/meeting/leader/details/', (request, response) => {
+        response.render('meeting-leader-details');
+    });
+
 
     return app;
     

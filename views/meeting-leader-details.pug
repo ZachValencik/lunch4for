@@ -28,9 +28,8 @@ body
     include ./nav.pug
     .container
     .border-arrow.curvy
-    h1.white December
+    h1.white Meeting Details
     div.jumbotron
-        p After Lunch Summary
         form(action="/meeting/leader", method="POST")
             div.row.mb-1
                 div.col-sm-6.text-right
@@ -44,9 +43,9 @@ body
                     input(name="time" value="" style="width:260px")
             div.row.mb-1
                 div.col-sm-6.text-right
-                    label(for="comments") Comments:
+                    label(for="location") Location:
                 div.col-sm-6.text-left
-                    input(name="comments" style="width:260px; padding: 0 0 200px 0;")
+                    input(name="location" style="width:260px;")
 
             button.btn.form.btn-outline-secondary(type="submit" style="margin:5px; margin-left:550px; margin-top:60px;") Submit
 
