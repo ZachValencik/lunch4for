@@ -32,8 +32,14 @@ module.exports = (() => {
     });
     
     app.get('/meeting/:username', asyncHandler(async (request, response) => {
+        let info = request.session;
         let tId = await MeetingController.getMeetingID(request.session.account.id);
-        console.log('This is the team_id: ' , tId);
+        console.log('This is the team_id: ' , tId.Team_Id);
+        if (tId) {
+            const meetingData = await MeetingController.getMeetingData(tId.Team_Id)
+            console.log('Meeting Data: ', meetingData);
+            response.render('meeting', { info, Group: meetingData });
+        }
         response.send("hello " + request.params.username);
 
     }));

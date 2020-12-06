@@ -83,7 +83,7 @@ h1.white{
 }
 table{
   color: white;
-  border: 1px solid white;
+  border: 1px solid darkgray;
 }
 thead, th{
   border: 1px solid white;
@@ -91,7 +91,9 @@ thead, th{
   color:black;
 }
 tr,td{
-  border: 1px solid white;
+  color: black;
+  border: 1px solid darkgray;
+  background-color: white;
 }
 .white{
   color: white;

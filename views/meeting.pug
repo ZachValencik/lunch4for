@@ -10,18 +10,18 @@ body
                 table.table.table-striped
                     thead
                         th Name
-                        th E-Mail
+                        th Department
                         th Leader
                     
                     tbody
-                        tr 
-                            td John Doe
-                            td jdoe@aurora.edu
-                            td Leader
-                        tr
-                            td Tom Smith
-                            td tsmith@aurora.edu
-                            td 
+                        each member in Group
+                            tr
+                                td=member._name
+                                td=member._department
+                                if(member._leader == 1)
+                                    td Leader
+                                else
+                                    td
 
             //Section for login form
             div(class='col-sm login')

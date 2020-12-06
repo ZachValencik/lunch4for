@@ -9,29 +9,30 @@ const { setmultipleColumnSet } = require('../util/uncommon.utils');
 
 class MeetingModel {
     profileTable = 'profile';
-    teamID = 'Team_Id';
+    //teamID = 'Team_Id';
 
     findTeamID = async (id) => {
         //console.log("In findTeamID function, id: ", id.Profile_id);
         let uId = id.Profile_id;
         const sql = `SELECT Team_Id FROM ${this.profileTable} WHERE Profile_id = ?`;
+
         const result = await query(sql, uId);
-        console.log('In findTeamID function, result: ' , result);
+        //console.log('In findTeamID function, result: ' , result);
         return result;
     }
 
-    /*
     findGroup = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
+        //let tid = params.Team_Id;
 
-        const sql = `SELECT * FROM ${this.profileTable} WHERE ${teamID} = ?`;
-
+        const sql = `SELECT * FROM ${this.profileTable} WHERE ${columnSet}`;
+        //const sql = `SELECT * FROM ${this.profileTable} WHERE Team_Id = ?`;
         const result = await query(sql, [...values]);
-        
+
+        //console.log("In findGroup: ", result);
         // return back the first row (user)
-        console.log(result);
         return result;
-    }*/
+    }
 }
 
 module.exports = new MeetingModel;
