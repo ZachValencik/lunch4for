@@ -1,30 +1,37 @@
 const AccountModel = require("../model/accounts_model")
 const MeetingModel = require('../model/meeting_model')
-const meetingData = require('../util/meeting_data')
+const groupData = require('../util/meeting_data')
 const AccountController = require('./account_controller')
 
 class MeetingController {
 
+    getMeetingData = async(teamId) => {
+        const m_data = await MeetingModel.findMeeting({ Team_Id: teamId })
+        if(m_data){
+            return m_data[0];
+        }
+    }
+
     //Use profile_id to find team ID from profile table
-    getMeetingID = async(proId) => {
-        const team_id = await MeetingModel.findTeamID({Profile_id: proId})
-        if(team_id){
-            return team_id[0];
+    getUserInfo = async(proId) => {
+        const profile_data = await MeetingModel.findTeamID({Profile_id: proId})
+        if(profile_data){
+            return profile_data[0];
         }
     }
 
     //gets the data from the profile table and formats it so that it shows up on the pug file
-    getMeetingData = async (teamId) => {
-        const t_data = await MeetingModel.findGroup({ Team_Id: teamId })
-        //console.log("In getMeetingData, t_data: ", t_data);
+    getGroupData = async (teamId) => {
+        const g_data = await MeetingModel.findGroup({ Team_Id: teamId })
+        //console.log("In getGroupData, g_data: ", g_data);
         let r = [];
-        if (t_data) {
-            for (let i = 0; i < t_data.length; i++) {
+        if (g_data) {
+            for (let i = 0; i < g_data.length; i++) {
                 //populates r list with meetingData objects defined in ('..util/meeting_data.js')
-                r[i] = new meetingData(
-                    t_data[i].Name,
-                    t_data[i].Department,
-                    t_data[i].Leader
+                r[i] = new groupData(
+                    g_data[i].Name,
+                    g_data[i].Department,
+                    g_data[i].Leader
                 )
               }
             return r

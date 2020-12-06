@@ -30,13 +30,13 @@ body
                 table.table
                     tr
                         td Date:
-                        td Dec 13, 2020
+                        td=Meeting.Meet_Date
                     tr
                         td Time:
-                        td 10:30 AM
+                        td=Meeting.Meet_Time
                     tr
                         td Location:
-                        td The Spot
+                        td=Meeting.Meet_Location
                 if(leader)
                     div.text-uppercase
                         a(class="btn btn-info" href="/home" role="button") Leave After Lunch Summary
