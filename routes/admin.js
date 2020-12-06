@@ -58,9 +58,7 @@ module.exports = (() => {
 
 
     }))
-    app.get('/test', (request, response) => {
-        response.render('create-profile', { variables: options.selectOption })
-    })
+    
     //this is used to give time to update the DB  otherwise it will load outdate data
     app.get('/redirect-to-users', (request, response) => {
         response.redirect('/admin/users')
