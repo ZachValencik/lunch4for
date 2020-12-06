@@ -1,3 +1,9 @@
+.fa-check-circle{
+  color: #59CD90;
+}
+.fa-times{
+  color: red;
+}
 .switch {
     position: relative;
     display: inline-block;

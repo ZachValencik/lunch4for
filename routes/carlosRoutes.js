@@ -118,10 +118,11 @@ module.exports = (() => {
         if (request.session.admin) {
             // console.log("activeChecker(1) =", activeChecker(0))
             let current_active_members = await AdminController.getActiveUsers()
+            let ad = true
             // console.log(current_active_members)
             // console.log(request.session.account)
             // console.log(current_active_members.active)
-            response.render('admin-homepage', current_active_members)
+            response.render('admin-homepage', {current_active_members , ad})
             // response.send("You are admin")
         } else {
             return next()

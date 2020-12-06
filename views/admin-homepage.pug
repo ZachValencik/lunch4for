@@ -4,9 +4,10 @@ include ./header.pug
 body
     include ./nav.pug
     .container
-        div(class='jumbotron text-center')
+        div(class='jumbotron text-center jumbotron-fluid')
             h1 Welcome Back 
             p This is the Lunch 4 Four website
+        .jumbotron
             #piechart(style='width: 100%; height: 500px; margin: auto;')
             script(type='text/javascript' src='https://www.gstatic.com/charts/loader.js')
             script(type='text/javascript').
@@ -17,8 +18,8 @@ body
               function drawChart() {
               var data = google.visualization.arrayToDataTable([
               ['Task', 'Hours per Day'],
-              ['Active', #{active}],
-              ['Inactive', #{inactive}],
+              ['Active', #{current_active_members.active}],
+              ['Inactive', #{current_active_members.inactive}],
               ]);
               // Optional; add a title and set the width and height of the chart
               var options = {'backgroundColor' : 'none', 'colors' : ['#003049','#D62828'], pieHole: 0.4,  'pieSliceTextStyle': { color: 'white'},

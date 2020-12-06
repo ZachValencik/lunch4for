@@ -4,7 +4,7 @@ html(lang='en')
     body
         include ./nav.pug
         .container
-            h1 For admin eyes only #{active}
+            h1 Alter User's Status
             form( action='/save-user-settings' method='POST' onsubmit='return checkbox()' )
                 table.table.table-dark
                     tr
@@ -25,5 +25,6 @@ html(lang='en')
                                     span.slider.round
                                 input(type='hidden' name='active' value="0")    
                                 //- input(type="hidden" name="active" value=(true === false ? "1" : '0'))
-                button.btn.btn-primary.btn-lg(type='submit') Save Changes
-                button.btn.btn-secondary.btn-lg(type='button') Cancel
+                button.btn.btn-primary.btn-lg.m-1(type='submit') Save Changes
+                a.btn.btn-secondary.btn-lg.m-1(href='/admin/users' role='button' aria-pressed='true') Cancel
+

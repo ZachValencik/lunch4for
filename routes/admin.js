@@ -51,12 +51,17 @@ module.exports = (() => {
         // await AdminController.updateActivity(request.body.id , request.body.active)
         let list = formatActivity(request.body.id, request.body.active)
         list.forEach( (user) =>{
-            AccountModel.update({active : parseInt(user.active)}, user.id)
+             AccountModel.update({active : parseInt(user.active)}, user.id)
         })
-        response.send(list)
+        response.redirect('/redirect-to-users')
+        // response.send(list)
 
 
     }))
+    //this is used to give time to update the DB  otherwise it will load outdate data
+    app.get('/redirect-to-users', (request, response) => {
+        response.redirect('/admin/users')
+    })
     //this will display all admins 
     //give the ability to become or strip admin based on their role
     //full admin --- give / take admin level | manipulate users
