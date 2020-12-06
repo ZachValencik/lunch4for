@@ -1,15 +1,15 @@
 class meetingData {
     #name = '';
-    #teamId = '';
     #department = '';
+    #leader = '';
 
-    constructor(name, teamId, department) {
+    constructor(name, department, leader) {
         this.#name = name;
-        this.#teamId = teamId;
         this.#department = department;
+        this.#leader = leader;
         this._name = name;
-        this._teamId = teamId;
         this._department = department;
+        this._leader = leader;
     }
 
     get name() {
@@ -20,20 +20,20 @@ class meetingData {
         this._name = value;
     }
 
-    get teamId() {
-        return this._teamId;
-    }
-
-    set teamId(value) {
-        this._teamId = value;
-    }
-
     get department() {
         return this._department;
     }
 
     set department(value) {
         this._department = value;
+    }
+
+    get leader() {
+        return this._leader;
+    }
+
+    set leader(value) {
+        this._leader = value;
     }
 }
 

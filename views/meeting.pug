@@ -10,24 +10,35 @@ body
                 table.table.table-striped
                     thead
                         th Name
-                        th E-Mail
+                        th Department
                         th Leader
                     
                     tbody
-                        tr 
-                            td John Doe
-                            td jdoe@aurora.edu
-                            td Leader
-                        tr
-                            td Tom Smith
-                            td tsmith@aurora.edu
-                            td 
+                        each member in Group
+                            tr
+                                td=member._name
+                                td=member._department
+                                if(member._leader == 1)
+                                    td Leader
+                                else
+                                    td
 
             //Section for login form
             div(class='col-sm login')
-                h1 Meeting Detail for #{info.username}
-                p.white Date: 
-                p.white Time:
-                p.white Location:
+                h1 Meeting Detail
+                hr
+                table.table
+                    tr
+                        td Date:
+                        td=Meeting.Meet_Date
+                    tr
+                        td Time:
+                        td=Meeting.Meet_Time
+                    tr
+                        td Location:
+                        td=Meeting.Meet_Location
+                if(leader)
+                    div.text-uppercase
+                        a(class="btn btn-info" href="/home" role="button") Leave After Lunch Summary
                 div(id='calendar')
     include ./bootstrapScript.pug      

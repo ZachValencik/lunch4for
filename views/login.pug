@@ -7,16 +7,16 @@ head
     include ../public/css/style.css  
   include ./navLogin.pug
 body
-  div(class='container')
-    div(class='row')
+  div.container
+    div.row
       //Section for website description
-      div(class='col-sm login')
+      div.col-sm.login
         h1 Lunch-4-Four
         hr
         p.white Here is some info on lunch for four
 
       //Section for login form
-      div(class='col-sm login')
+      div.col-sm.login
         .login-form
           h1 Sign In
           form(action='auth' method='POST')
