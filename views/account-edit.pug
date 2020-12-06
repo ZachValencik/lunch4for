@@ -2,6 +2,7 @@ doctype html
 head
     include ./bootstrapScript.pug
     include ./header.pug 
+    script(src='/js/validate.js')
     meta(name="viewport" content="width=device-width, initial-scale=1")
     style 
         include ../public/css/style.css
@@ -103,17 +104,26 @@ body
                     div.col-sm-6.text-right
                         label(for="username") Username:
                     div.col-sm-6.text-left
-                        input(name="username" value=info.username)
+                        .input-group.mb-3
+                            input#username.form-control(type='text' name="username" placeholer='usernamer' required='' value=info.username)
                 div.row.mb-1
                     div.col-sm-6.text-right
                         label(for="email") Email:
                     div.col-sm-6.text-left
-                        input(name="email" value=info.email)
+                        .input-group.mb-3
+                            input#email.form-control(type='text'  name='email' placeholder='Email' required='' value=info.email)
                 div.row.mb-1
                     div.col-sm-6.text-right
                         label(for="password") Password:
                     div.col-sm-6.text-left
-                        input(name="password")
+                        .input-group.mb-3
+                            input#password.form-control(type='password' name='password' placeholder='Password' required='')
+                div.row.mb-1
+                    div.col-sm-6.text-right
+                        label(for="password") Confirm Password:
+                    div.col-sm-6.text-left
+                        .input-group.mb-3
+                            input#passwordRetype.form-control(type='password' name='passwordRetype' placeholder='Retype Password' required='')
 
                 button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Save Changes
                 a#cancel.btn.form(href='/account/:id', name='cancel', style='margin:5px;')  Cancel 

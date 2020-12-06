@@ -6,69 +6,6 @@ head
     style 
         include ../public/css/style.css
     style.
-      .switch {
-      position: absolute;
-      left: 400px;
-      margin-top: 30px;
-      width: 90px;
-      height: 34px;
-      }
-      .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-      }
-      .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #363636;
-      -webkit-transition: .4s;
-      transition: .4s;
-      }
-      .slider:before {
-      position: absolute;
-      content: "";
-      height: 28px;/*Changes height of slider*/
-      width: 28px; /*Changes width of slider*/
-      left: 4px; /*Moves the slider to the left*/
-      bottom: 4px;/*Moves the slider up/down within the outside box*/
-      background-color: white; /*Color of text*/
-      -webkit-transition: .4s;
-      transition: .4s; /*Speed of slider*/
-      }
-      input:checked + .slider {
-      background-color: #535b63; /*Color of "ON"*/
-      }
-      input:checked + .slider:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(55px);
-      }
-      /* Rounded sliders */
-      .slider.round {
-      border-radius: 44px;
-      }
-      .slider.round:before {
-      border-radius: 50%;
-      }
-      .slider:after{
-        content:'OFF';
-        color: white;
-        display: block;
-        position: absolute;
-        transform: translate(-50%,-50%);
-        top: 50%; /*Moves text up/down*/
-        left: 50%; /*Moves text left/right*/
-        font-size: 10px;
-        font-family: Verdana, sans-serif;
-        }
-        input:checked + .slider:after {  
-        content:'ON';
-        }
         p { 
             color: white;
             font-family: "Roboto", sans-serif;
@@ -86,19 +23,14 @@ head
             position:relative; 
             left:-220px;
             letter-spacing: 1px;
-        }
-      
+         }
+            
 body
     include ./nav.pug
     .container
         h1.white Account Settings
         div.col-sm-auto.py-3
             div.row
-            label.switch
-                input(type="checkbox" checked="")
-                span.slider.round
-            br
-            br
             form(action="/account", method="POST")
                 div.row.mb-1
                     div.col-sm-6.text-right
@@ -114,11 +46,6 @@ body
                     div.col-sm-6.text-right
                     label(for="email") Email:
                     p #{info.email}
-                    div.col-sm-6.text-left
-                div.row.mb-1
-                    div.col-sm-6.text-risght
-                    label(for="password") Password:
-                    p #{info.password}
                     div.col-sm-6.text-left
 
                 button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Edit
