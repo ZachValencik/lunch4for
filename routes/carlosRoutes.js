@@ -131,11 +131,12 @@ module.exports = (() => {
     app.get('/home', user_session, admin_homepage, function (request, response) {
         let info = request.session
         let ad = false
+        
         if (request.session.admin == true) {
             ad = true
         }
-        response.render('home', { info, ad })
 
+        response.render('home', { info, ad })
     });
 
 
