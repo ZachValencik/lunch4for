@@ -31,22 +31,22 @@ body
     h1.white December
     div.jumbotron
         p After Lunch Summary
-        form(action="/meeting/leader", method="POST")
+        form(action="/meeting/leader/summary", method="POST")
             div.row.mb-1
                 div.col-sm-6.text-right
-                    label(for="date") Date:
+                    label(for="summary_date") Date:
                 div.col-sm-6.text-left
-                    input(name="date" value="" style="width:260px")
+                    input(name="summary_date" value="" required='' style="width:260px")
             div.row.mb-1
                 div.col-sm-6.text-right
-                    label(for="time") Time:
+                    label(for="summary_time") Time:
                 div.col-sm-6.text-left
-                    input(name="time" value="" style="width:260px")
+                    input(name="summary_time" value="" required='' style="width:260px")
             div.row.mb-1
                 div.col-sm-6.text-right
-                    label(for="comments") Comments:
+                    label(for="summary_comments") Comments:
                 div.col-sm-6.text-left
-                    input(name="comments" style="width:260px; padding: 0 0 200px 0;")
+                    input(name="summary_comments" required='' style="width:260px; padding: 0 0 200px 0;")
 
             button.btn.form.btn-outline-secondary(type="submit" style="margin:5px; margin-left:550px; margin-top:60px;") Submit
 
