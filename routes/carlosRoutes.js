@@ -108,7 +108,7 @@ module.exports = (() => {
             ProfileModel.update(profile_package, await AccountController.getID(request.signedCookies.profile_email))
             // newProfile(profile_package)
         }
-
+        response.redirect(307 , '/success')
         response.json(profile_package)
     }))
     //move to admin-controller file

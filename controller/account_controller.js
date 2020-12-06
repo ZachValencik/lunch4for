@@ -61,14 +61,14 @@ class AccountController {
 
         if (email || password) {
             const user = await AccountModel.findOne({ email: email })
-            console.log(user)
+            console.log("login user info: ",user)
             if (user && (await bcrypt.compare(password, user.password))) {
                 request.session.loggedin = true;
                 if (user.admin === 1) {
                     console.log("I have been invoked", user)
-                    request.session.admin = !(await verifyAdminStatus(user))
+                    request.session.admin = await verifyAdminStatus(user)
                 }
-                console.log(request.session.admin)
+                console.log("Admin status: ",request.session.admin)
                 //this sets up information for the home page
                 request.session.username = user.username;
                 if(!request.session.user_id){
