@@ -25,30 +25,28 @@ module.exports = (() => {
     'use strict';
     let app = require('express').Router();
     // let connection = require('../model/connection')
-
-    //the meeting page route
-    app.get("/meeting", user_session, (request, response) => {
-        response.redirect(`/meeting/${request.session.username}`)
-    });
     
-    app.get('/meeting/:username', asyncHandler(async (request, response) => {
+    //get meeting page and populate table with meetingData
+    app.get('/meeting', asyncHandler(async (request, response) => {
         let info = request.session;
-        let tId = await MeetingController.getMeetingID(request.session.account.id);
-        console.log('This is the team_id: ' , tId.Team_Id);
-        if (tId) {
-            const meetingData = await MeetingController.getMeetingData(tId.Team_Id)
-            console.log('Meeting Data: ', meetingData);
-            response.render('meeting', { info, Group: meetingData });
+    
+        if(request.session.loggedin){
+            let tId = await MeetingController.getMeetingID(request.session.account.id);
+            if (tId) {
+                const meetingData = await MeetingController.getMeetingData(tId.Team_Id)
+                //console.log('Meeting Data: ', meetingData);
+                let leader = false;
+                if(tId.Leader == 1){
+                    //if user is leader then it displays after lunch summary button in meeting page
+                    leader = true;
+                }
+                response.render('meeting', { info, leader, Group: meetingData });
+            } 
+        } else{
+            response.redirect('/login');
         }
-        response.send("hello " + request.params.username);
 
     }));
-
-    /*app.get("/meeting", user_session, (request, response) => {
-        let info = request.session;
-        let ad = false;
-        response.render('meeting',{ info, ad });
-    })*/
 
     return app;
 })();

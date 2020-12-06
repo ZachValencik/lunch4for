@@ -1,20 +1,20 @@
 doctype html
 head
   meta(charset='utf-8')
-  title Sign Up 
+  title Lunch-4-Four | Sign Up
   include ./bootstrap.pug
-  script(src='/js/validate.js')
   style
     include ../public/css/style.css  
   include ./navSignup.pug
 body
-    div(class='container')
-        div(class='row')
-            div(class='col-sm')
+    div.container
+        div.row
+            div.col-sm.login
                 h1 Lunch-4-Four
                 hr
-                p(class='login') Here is some info on lunch for four
-            div(class='col-sm')
+                p.login.white Here is some info on lunch for four
+
+            div.col-sm.login
                 .login-form
                     h1 Sign Up
                     form(action='create' method='POST' )

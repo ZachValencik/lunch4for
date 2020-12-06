@@ -25,9 +25,20 @@ body
 
             //Section for login form
             div(class='col-sm login')
-                h1 Meeting Detail for #{info.username}
-                p.white Date: 
-                p.white Time:
-                p.white Location:
+                h1 Meeting Detail
+                hr
+                table.table
+                    tr
+                        td Date:
+                        td Dec 13, 2020
+                    tr
+                        td Time:
+                        td 10:30 AM
+                    tr
+                        td Location:
+                        td The Spot
+                if(leader)
+                    div.text-uppercase
+                        a(class="btn btn-info" href="/home" role="button") Leave After Lunch Summary
                 div(id='calendar')
     include ./bootstrapScript.pug      

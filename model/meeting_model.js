@@ -9,28 +9,29 @@ const { setmultipleColumnSet } = require('../util/uncommon.utils');
 
 class MeetingModel {
     profileTable = 'profile';
-    //teamID = 'Team_Id';
 
-    findTeamID = async (id) => {
-        //console.log("In findTeamID function, id: ", id.Profile_id);
-        let uId = id.Profile_id;
-        const sql = `SELECT Team_Id FROM ${this.profileTable} WHERE Profile_id = ?`;
+    //uses profile id to find the team_id using the profile table
+    //returns a team_id
+    findTeamID = async (params) => {
+        const { columnSet, values } = multipleColumnSet(params);
+        //columnSet = "Profile_id = ?"
+        //values = array of values like team_id;
 
-        const result = await query(sql, uId);
+        const sql = `SELECT * FROM ${this.profileTable} WHERE ${columnSet}`;
+
+        const result = await query(sql, [...values]);
         //console.log('In findTeamID function, result: ' , result);
         return result;
     }
 
+    //method is sent team id
+    //finds every row in profile table where team_id column matches the team_id given
     findGroup = async (params) => {
         const { columnSet, values } = multipleColumnSet(params)
-        //let tid = params.Team_Id;
 
         const sql = `SELECT * FROM ${this.profileTable} WHERE ${columnSet}`;
-        //const sql = `SELECT * FROM ${this.profileTable} WHERE Team_Id = ?`;
-        const result = await query(sql, [...values]);
 
-        //console.log("In findGroup: ", result);
-        // return back the first row (user)
+        const result = await query(sql, [...values]);
         return result;
     }
 }

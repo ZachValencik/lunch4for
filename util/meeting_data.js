@@ -20,20 +20,20 @@ class meetingData {
         this._name = value;
     }
 
-    get leader() {
-        return this._leader;
-    }
-
-    set leader(value) {
-        this._leader = value;
-    }
-
     get department() {
         return this._department;
     }
 
     set department(value) {
         this._department = value;
+    }
+
+    get leader() {
+        return this._leader;
+    }
+
+    set leader(value) {
+        this._leader = value;
     }
 }
 
