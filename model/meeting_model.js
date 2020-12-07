@@ -46,6 +46,19 @@ class MeetingModel {
         const result = await query(sql, [...values]);
         return result;
     }
+
+    //updates team table with meeting info
+    update = async (params, id) => {
+        const { columnSet, values } = setmultipleColumnSet(params)
+
+        console.log('Columnset Values for update: ', columnSet)
+        console.log('Values from update: ', values)
+        const sql = `UPDATE team SET ${columnSet} WHERE Team_Id = ?`;
+
+        const result = await query(sql, [...values, id]);
+
+        return result;
+    }
 }
 
 module.exports = new MeetingModel;
