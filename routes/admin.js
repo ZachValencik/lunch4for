@@ -2,6 +2,7 @@ const AccountModel = require('../model/accounts_model');
 const asyncHandler = require('express-async-handler');
 const AdminController = require('../controller/admin_controller')
 const { response, request } = require('express');
+const admin_model = require('../model/admin_model');
 module.exports = (() => {
 
     //these are the routes for the admin pages
@@ -95,6 +96,38 @@ module.exports = (() => {
         }
 
     }))
+
+    app.get("/admin/add", AdminController.admin_session, asyncHandler(async (request, response) => {
+        const allUsers = await AccountModel.find({ admin: 0 })
+
+        allUsers.forEach(
+            (user) => {
+                user.admin = Boolean(user.admin)
+            }
+        )
+        // console.log(allUsers)
+        if (allUsers) {
+            response.render("user_to_admin", { users: allUsers })
+        }
+    }))
+
+    app.post("/add-admin", asyncHandler(async (request, response) => {
+
+        // console.log(request.body.id)
+        console.log("body>>>",request.body)
+        // await AdminController.updateActivity(request.body.id , request.body.active)
+        let list = formatActivity(request.body.id, request.body.admin)
+        list.forEach( (user) =>{
+             AccountModel.update({admin : parseInt(user.active)}, user.id)
+             admin_model.createDefault({Account_Id : user.id , Role : 'Admin'})
+        })
+        response.redirect('/admin/admins')
+        // response.send(list)
+
+
+    }))
+
+    
 
     // const formatActivity = require('../util/formatActivity')
     app.post("/save-admin-settings", asyncHandler(async (request, response) => {

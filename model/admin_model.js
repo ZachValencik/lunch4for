@@ -48,6 +48,15 @@ class AdminModel {
 
         return affectedRows;
     }
+    createDefault = async ({ u_id, role}) => {
+        const sql = `INSERT INTO ${this.tableName}
+        ( Account_Id, Role) VALUES (?,?)`;
+
+        const result = await query(sql, [ u_id, role]);
+        const affectedRows = result ? result.affectedRows : 0;
+
+        return affectedRows;
+    }
     //Jackie can use this
     update = async (params, id) => {
         const { columnSet, values } = setmultipleColumnSet(params)

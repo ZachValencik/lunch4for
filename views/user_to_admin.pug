@@ -5,7 +5,7 @@ html(lang='en')
         include ./nav.pug
         .container
             h1 Alter User's Status
-            form( action='/save-admin-settings' method='POST' onsubmit='return checkbox()' )
+            form( action='/add-admin' method='POST' onsubmit='return checkbox()' )
                 table.table.table-dark
                     tr
                         thead.thead-dark
@@ -26,6 +26,5 @@ html(lang='en')
                                 input(type='hidden' name='admin' value="0")    
                                 //- input(type="hidden" name="active" value=(true === false ? "1" : '0'))
                 button.btn.btn-primary.btn-lg.m-1(type='submit') Save Changes
-                a.btn.btn-success.btn-lg.m-1(href='/admin/add' role='button' aria-pressed='true') Add
                 a.btn.btn-secondary.btn-lg.m-1(href='/admin/admins' role='button' aria-pressed='true') Cancel
 
