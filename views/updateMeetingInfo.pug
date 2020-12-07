@@ -9,14 +9,12 @@ body
                 table.table
                     tr
                         td Date
-                        td Input YYYY-MM-DD Format 
-                            br
-                            input(type='text' name='meeting_date' value=Meeting.Meet_Date pattern="^20[0-2][0-9]-((0[1-9])|(1[0-2]))-(0[1-9]|[1-2][0-9]|3[0-1])$" required='')
+                        td
+                            input(type="date" name='meeting_date' id="date")
                     tr
                         td Time
-                        td Input hh:mm Format
-                            br
-                            input(type='text' name='meeting_time' value=Meeting.Meet_Time pattern="^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" required='')
+                        td 
+                            input(type="time" name='meeting_time' id="time")
                     tr
                         td Location
                         td
