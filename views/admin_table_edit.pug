@@ -1,0 +1,30 @@
+doctype html
+html(lang='en')
+    include ./header.pug
+    body
+        include ./nav.pug
+        .container
+            h1 Alter User's Status
+            form( action='/save-admin-settings' method='POST' onsubmit='return checkbox()' )
+                table.table.table-dark
+                    tr
+                        thead.thead-dark
+                            th ID
+                            th Username
+                            th Email
+                            th Status
+                    each u in users
+                        tr
+                            td= u.id
+                                input(type='hidden' name='id' value=u.id)
+                            td= u.username
+                            td= u.email
+                            td 
+                                label.switch
+                                    input(type='checkbox' name='admin' value="1" checked=u.admin)
+                                    span.slider.round
+                                input(type='hidden' name='admin' value="0")    
+                                //- input(type="hidden" name="active" value=(true === false ? "1" : '0'))
+                button.btn.btn-primary.btn-lg.m-1(type='submit') Save Changes
+                a.btn.btn-secondary.btn-lg.m-1(href='/admin/admins' role='button' aria-pressed='true') Cancel
+

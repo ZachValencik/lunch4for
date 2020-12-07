@@ -77,8 +77,38 @@ module.exports = (() => {
 
         if (allUsers) {
             console.log(allUsers)
-            response.render("table", { users: allUsers })
+            response.render("table-admin", { users: allUsers })
         }
+
+    }))
+    app.get("/admin/alter", AdminController.admin_session, asyncHandler(async (request, response) => {
+        const allUsers = await AccountModel.find({ admin: 1 })
+
+        allUsers.forEach(
+            (user) => {
+                user.admin = Boolean(user.admin)
+            }
+        )
+        // console.log(allUsers)
+        if (allUsers) {
+            response.render("admin_table_edit", { users: allUsers })
+        }
+
+    }))
+
+    // const formatActivity = require('../util/formatActivity')
+    app.post("/save-admin-settings", asyncHandler(async (request, response) => {
+
+        // console.log(request.body.id)
+        console.log("body>>>",request.body)
+        // await AdminController.updateActivity(request.body.id , request.body.active)
+        let list = formatActivity(request.body.id, request.body.admin)
+        list.forEach( (user) =>{
+             AccountModel.update({admin : parseInt(user.active)}, user.id)
+        })
+        response.redirect('/admin/admins')
+        // response.send(list)
+
 
     }))
 
