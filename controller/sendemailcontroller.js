@@ -34,7 +34,7 @@ connection.connect(function(err) {
       from: 'lunch4four@gmail.com',  //maybe this also?
       to: result[i].email, //this gets the email from the loop
       subject: 'For Active users only', //admin can change the subject also.
-      text: 'This is your monthly message '+ result[0].username+ ' from lunch4four blah blah blah..' // hopefully the admin can change this message and send it out to all activate 
+      text: 'This is your monthly message '+ result[0].username+ '. You are in the Lunch4four program. Horray!!! IF you would like to unsub from the lunch4four program log into your account and deactive your account. ' // hopefully the admin can change this message and send it out to all activate 
     };
 
     transporter.sendMail(mailOptions, function(error, info){
