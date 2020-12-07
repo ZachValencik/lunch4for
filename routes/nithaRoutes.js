@@ -54,5 +54,42 @@ module.exports = (() => {
 
     }));
 
+    app.get('/meeting/updateInfo', asyncHandler(async (request, response) => {
+        let info = request.session;
+        let userInfo = await MeetingController.getUserInfo(request.session.account.id);
+        const meetingData = await MeetingController.getMeetingData(userInfo.Team_Id);
+        console.log(meetingData);
+    
+        if(request.session.loggedin){
+            response.render('updateMeetingInfo', { info, TeamId: userInfo.Team_Id, Meeting: meetingData });
+        } else{
+            response.redirect('/login');
+        }
+
+    }));
+
+    app.post("/updateMeeting", asyncHandler(async (request, response) => {
+        // console.log(request.signedCookies.profile_email)
+        // await ProfileController.createDefault(request.body.email)
+        //to do => switch to useing classes for generating objects
+        let meeting_package = {
+            Meet_Date: request.body.meeting_date,
+            Meet_Time: request.body.meeting_time,
+            Meet_Location: request.body.meeting_location
+        }
+
+        const teamID = request.body.team_id
+        console.log("team id = ", teamID);
+        const userID = await AccountController.getID_UN(request.session.username)
+        if (meeting_package) {
+
+            await MeetingModel.update(meeting_package, teamID)
+            // newProfile(meeting_package)
+        }
+        response.redirect("/meeting")
+        // response.json(meeting_package)
+
+    }))
+
     return app;
 })();

@@ -1,0 +1,30 @@
+doctype html
+include ./header.pug
+body
+    include ./nav.pug
+    .container
+        div.col-sm.updatemeeting
+            h1 Update Meeting Info
+            form(action='/updateMeeting' method='POST')
+                table.table
+                    tr
+                        td Date
+                        td
+                            input(type='text' name='meeting_date' value=Meeting.Meet_Date required='')
+                    tr
+                        td Time
+                        td
+                            input(type='text' name='meeting_time' value=Meeting.Meet_Time required='')
+                    tr
+                        td Location
+                        td
+                            input(type='textbox' name='meeting_location' value=Meeting.Meet_Location required='')
+                br
+                input(input type="hidden" name="team_id" value=TeamId)
+                input(class="btn btn-info" type='submit')
+            br
+            br
+            div.text-uppercase
+                    a(class="btn btn-info" href="/meeting" role="button") Cancel
+            br
+    include ./bootstrapScript.pug      
