@@ -31,6 +31,14 @@ class AdminController {
             return response.redirect("/restricted")
         }
     }
+    createAdmin = async ( u_id) => {
+        const acc = await AdminModel.findOne({Account_Id : u_id})
+        if (!acc){
+            await AdminModel.create({A_Id : u_id, Account_Id : u_id, Role: `Admin` })
+            // return true
+        }
+
+    }
 
     updateActivity  = async (id_list = [], activity_list = []) => {
         // console.log(id_list, activity_list)

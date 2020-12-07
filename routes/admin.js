@@ -74,10 +74,25 @@ module.exports = (() => {
 
 
     app.get("/admin/admins", AdminController.admin_session, asyncHandler(async (request, response) => {
-        const allUsers = await AccountModel.find({ admin: 1 })
 
+        const allUsers = await AccountModel.find({ admin: 1 })
+        // await admin_model.create({A_Id: 2222, Account_Id: 2222 , Role: 'Admin' })
+        
         if (allUsers) {
-            console.log(allUsers)
+
+        // allUsers.forEach( asyncHandler(async (user)=>{
+        //         console.log(user)
+        //         await admin_model.create({A_Id: user.id , Account_Id: user.id , Role: 'Admin' })
+        //     }))
+
+
+            // for( const user of allUsers){
+            //     console.log("loop", user)
+            //     let input = {A_Id: user.id, Account_Id: user.id , Role: 'Admin' }
+            //     // console.log(id)
+            //     await admin_model.create(input)
+            // }
+            // console.log(allUsers)
             response.render("table-admin", { users: allUsers })
         }
 
@@ -117,9 +132,12 @@ module.exports = (() => {
         console.log("body>>>",request.body)
         // await AdminController.updateActivity(request.body.id , request.body.active)
         let list = formatActivity(request.body.id, request.body.admin)
-        list.forEach( (user) =>{
-             AccountModel.update({admin : parseInt(user.active)}, user.id)
-             admin_model.createDefault({Account_Id : user.id , Role : 'Admin'})
+        await list.forEach( (user) =>{
+            AccountModel.update({admin : parseInt(user.active)}, user.id)
+            // if(parseInt(user.active) > 0){
+            //       AdminController.createAdmin(user.id)
+            //     // console.log(temp)
+            // }
         })
         response.redirect('/admin/admins')
         // response.send(list)

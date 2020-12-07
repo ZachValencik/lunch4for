@@ -66,7 +66,8 @@ class AccountController {
                 request.session.loggedin = true;
                 if (user.admin === 1) {
                     console.log("I have been invoked", user)
-                    request.session.admin = await verifyAdminStatus(user)
+                    // request.session.admin = await verifyAdminStatus(user)
+                     request.session.admin = true
                 }
                 console.log("Admin status: ",request.session.admin)
                 //this sets up information for the home page

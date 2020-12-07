@@ -36,8 +36,6 @@ class AdminModel {
         return result[0];
     }
 
-    
-
 
     create = async ({ a_id, u_id, role}) => {
         const sql = `INSERT INTO ${this.tableName}
