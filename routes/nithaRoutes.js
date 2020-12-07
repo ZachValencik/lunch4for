@@ -58,7 +58,7 @@ module.exports = (() => {
         let info = request.session;
         let userInfo = await MeetingController.getUserInfo(request.session.account.id);
         const meetingData = await MeetingController.getMeetingData(userInfo.Team_Id);
-        console.log(meetingData);
+        //console.log(meetingData);
     
         if(request.session.loggedin){
             response.render('updateMeetingInfo', { info, TeamId: userInfo.Team_Id, Meeting: meetingData });
