@@ -22,6 +22,19 @@ class MeetingModel {
         return result;
     }
 
+    find = async (params = {}) => {
+        let sql = `SELECT * FROM team`;
+
+        if (!Object.keys(params).length) {
+            return await query(sql);
+        }
+
+        const { columnSet, values } = multipleColumnSet(params)
+        sql += ` WHERE ${columnSet}`;
+
+        return await query(sql, [...values]);
+    }
+
     //uses profile id to find the team_id using the profile table
     //returns a team_id
     findTeamID = async (params) => {

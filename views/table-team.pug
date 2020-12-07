@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+    include ./header.pug
+    body
+        include ./nav.pug
+        .container
+            h1 Meeting Data
+            table.table.table-dark
+                tr
+                    thead.thead-dark
+                        th Team Id
+                        th Leader
+                        th Location
+                        th Time
+                        th Status
+                each u in users
+                    tr
+                        td= u.Team_Id
+                        td= u.Leader
+                        td= u.Meet_Location
+                        td= u.Meet_Date
+                        td 
+                            if u.Activate
+                                i.fas.fa-check-circle
+                            else
+                                i.fas.fa-times
+

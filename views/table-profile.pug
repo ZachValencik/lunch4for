@@ -1,0 +1,27 @@
+doctype html
+html(lang='en')
+    include ./header.pug
+    body
+        include ./nav.pug
+        .container
+            h1 Profile Data
+            table.table.table-dark
+                tr
+                    thead.thead-dark
+                        th ID
+                        th Name
+                        th Team ID
+                        th Department
+                        th Leader?
+                each u in users
+                    tr
+                        td= u.Profile_id
+                        td= u.Name
+                        td= u.Team_Id
+                        td= u.Department
+                        td 
+                            if u.Leader
+                                i.fas.fa-check-circle
+                            else
+                                i.fas.fa-times
+

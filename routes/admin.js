@@ -163,5 +163,30 @@ module.exports = (() => {
 
     }))
 
+    const MeetingModel = require('../model/meeting_model')
+
+    app.get("/admin/teams", AdminController.admin_session, asyncHandler(async (request, response) => {
+        const allUsers = await MeetingModel.find({ Activate: 1 })
+        // await admin_model.create({A_Id: 2222, Account_Id: 2222 , Role: 'Admin' })
+        
+        if (allUsers) {
+
+            response.render("table-team", { users: allUsers })
+        }
+
+    }))
+const ProfileModel = require('../model/profile_model')
+
+    app.get("/admin/profile", AdminController.admin_session, asyncHandler(async (request, response) => {
+        const allUsers = await ProfileModel.find()
+        // await admin_model.create({A_Id: 2222, Account_Id: 2222 , Role: 'Admin' })
+        
+        if (allUsers) {
+
+            response.render("table-profile", { users: allUsers })
+        }
+
+    }))
+
     return app
 })();
