@@ -1,0 +1,28 @@
+doctype html
+html(lang='en')
+    include ./header.pug
+    body
+        include ./nav.pug
+        .container
+            h1 View All Users
+            table.table.table-dark
+                tr
+                    thead.thead-dark
+                        th ID
+                        th Username
+                        th Password
+                        th Email
+                        th Status
+                each u in users
+                    tr
+                        td= u.id
+                        td= u.username
+                        td= u.password
+                        td= u.email
+                        td 
+                            if u.admin
+                                i.fas.fa-check-circle
+                            else
+                                i.fas.fa-times
+            a.btn.btn-primary.btn-lg.active(href='/admin/alter' role='button' aria-pressed='true') Edit
+
