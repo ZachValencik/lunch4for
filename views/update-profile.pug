@@ -1,32 +1,25 @@
-doctype html
 include ./header.pug
 body
-    include ./nav.pug
     .container
-        div.col-sm.updatemeeting
-            h1 Update your profile
+        h1 Update your profile
+        .jumbotron
             form(action='/update' method='POST')
-                table.table
-                    tr
-                        td Name
-                        td
-                            input(type='text' name='profile_name' value=profileData._name required='')
-                    tr
-                        td Description
-                        td
-                            input(type='textbox' name='profile_desc' value=profileData._description required='')
-                    tr
-                        td Department
-                        td
-                            select(name='department' value=profileData._department)
-                                each v in variables
-                                    if v._value == profileData._department
-                                        option(value=profileData._department) #{v._dept}
-                                each variable in variables
-                                    option(value=variable._value) #{variable._dept}
-                input(type='submit' class="btn btn-info")
-            br
-            div.text-uppercase
-                    a(class="btn btn-info" href="/users" role="button") Cancel
-            br
-    include ./bootstrapScript.pug  
+                .form-group
+                    //- input(type='text' name='profile_name' value=profileData._name required='')
+                    label(for='profile_name') Name
+                    input(type='text' class="form-control" name='profile_name' id='profile_name' value=profileData._name required='')
+                .form-group
+                    label(for='profile_desc') About
+                    //- input(type='textbox' name='profile_desc' value=profileData._description required='')
+                    textarea(class="form-control" name='profile_desc' id='profile_desc' required='' maxlength="244",  rows="3") #{profileData._description}
+                label(for='department') Department
+                //- select.form-control.form-control-lg.mb-5(name='department' id='department')
+                //-     each variable in variables
+                //-         option(value=variable._value) #{variable._dept}
+                select.form-control.mb-5(name='department' value=profileData._department)
+                    each v in variables
+                        if v._value == profileData._department
+                            option(value=profileData._department) #{v._dept}
+                    each variable in variables
+                        option(value=variable._value) #{variable._dept}
+                input(type='submit' class='btn btn-primary')

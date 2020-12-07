@@ -90,6 +90,10 @@ module.exports = (() => {
         }
     }))
 
+    app.get('/test', (request, response) => {
+        response.render('create-profile', { variables: options.selectOption })
+    })
+
 
     //this will be the action for the create-profile page
     //it will store the information as a json file and place it inside the profile table 
@@ -108,8 +112,9 @@ module.exports = (() => {
             ProfileModel.update(profile_package, await AccountController.getID(request.signedCookies.profile_email))
             // newProfile(profile_package)
         }
-
-        response.json(profile_package)
+        // response.redirect(307 , '/success')
+        response.redirect(307, '/success')
+        // response.json(profile_package)
     }))
     //move to admin-controller file
     //this is a middleware function that loads the admin homepage depending if they are admin other wise render the default page
@@ -118,10 +123,11 @@ module.exports = (() => {
         if (request.session.admin) {
             // console.log("activeChecker(1) =", activeChecker(0))
             let current_active_members = await AdminController.getActiveUsers()
+            let ad = true
             // console.log(current_active_members)
             // console.log(request.session.account)
             // console.log(current_active_members.active)
-            response.render('admin-homepage', current_active_members)
+            response.render('admin-homepage', {current_active_members , ad})
             // response.send("You are admin")
         } else {
             return next()
@@ -141,14 +147,18 @@ module.exports = (() => {
 
 
     //profile
-    app.get("/users", user_session, (request, response) => {
-        response.redirect(`/users/${request.session.username}`)
+    app.get("/users", user_session,  asyncHandler(async (request, response) => {
+        let uname =  await AccountController.getUsernameById(request.session.user_id)
+        console.log(uname)
+        response.redirect(`/users/${uname}`)
 
-    })
-    app.post("/users", user_session, (request, response) => {
-        response.redirect(307, `/users/${request.session.username}`)
+    }))
 
-    })
+    app.post("/users", user_session,  asyncHandler(async (request, response) => {
+        let uname =  await AccountController.getUsernameById(request.session.user_id)
+        response.redirect(307, `/users/${uname}`)
+
+    }))
 
     // let getProfileId = require('../model/get_profile_id')
     // let getProfileData = require('../model/get_profile_data')
@@ -157,9 +167,10 @@ module.exports = (() => {
     //create profile
     app.post("/users/:username", asyncHandler(async (request, response) => {
         let username = request.params.username;
+        let uname =  await AccountController.getUsernameById(request.session.user_id)
         // console.log('this stored id is: ', request.session.userID)
-        let tempId = await ProfileController.getProfileId(request.session.username)
-        if (request.session.loggedin && request.session.username === username) {
+        let tempId = request.session.user_id
+        if (request.session.loggedin && uname === username) {
             if (tempId) {
                 const profileData = await ProfileController.getProfileData(tempId)
                 // console.log(profileData)
@@ -177,7 +188,7 @@ module.exports = (() => {
             Description: request.body.profile_desc,
             Department: request.body.department
         }
-        const userID = await AccountController.getID_UN(request.session.username)
+        const userID = request.session.user_id
         if (profile_package) {
 
             await ProfileModel.update(profile_package, userID)

@@ -60,14 +60,16 @@ class ProfileController {
 
     profileOwnership = async (request, response, next) => {
         const username = request.params.username;
-        let ID = await AccountController.getID_UN(username)
+
+        const uname =  await AccountController.getUsernameById(request.session.user_id)
+        let ID = request.session.user_id
         let profileData = await this.getProfileData(ID)
         console.log('rpf', profileData)
-        if (request.session.loggedin && request.session.username === username) {
+        if (request.session.loggedin && uname === username) {
             response.render('profile', { profileData, owner: true })
         }
         //your profile to other people
-        else if (request.session.loggedin && request.session.username !== username) {
+        else if (request.session.loggedin && uname !== username) {
             response.render('profile', { profileData, owner: false })
 
         } else {

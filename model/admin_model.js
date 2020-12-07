@@ -39,11 +39,11 @@ class AdminModel {
     
 
 
-    create = async ({ id, password, username }) => {
+    create = async ({ a_id, u_id, role}) => {
         const sql = `INSERT INTO ${this.tableName}
-        ( A_Id, A_Pass, A_Name) VALUES (?,?,?)`;
+        ( A_Id, Account_Id, Role) VALUES (?,?,?)`;
 
-        const result = await query(sql, [id, password, username ]);
+        const result = await query(sql, [a_id, u_id, role]);
         const affectedRows = result ? result.affectedRows : 0;
 
         return affectedRows;
@@ -52,7 +52,7 @@ class AdminModel {
     update = async (params, id) => {
         const { columnSet, values } = setmultipleColumnSet(params)
 
-        const sql = `UPDATE admin SET ${columnSet} WHERE A_Id = ?`;
+        const sql = `UPDATE ${this.tableName} SET ${columnSet} WHERE A_Id = ?`;
 
         const result = await query(sql, [...values, id]);
 

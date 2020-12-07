@@ -4,7 +4,7 @@ html(lang='en')
     body
         include ./nav.pug
         .container
-            h1 For admin eyes only
+            h1 View All Users
             table.table.table-dark
                 tr
                     thead.thead-dark
@@ -19,4 +19,10 @@ html(lang='en')
                         td= u.username
                         td= u.password
                         td= u.email
-                        td= u.active
+                        td 
+                            if u.active
+                                i.fas.fa-check-circle
+                            else
+                                i.fas.fa-times
+            a.btn.btn-primary.btn-lg.active(href='/admin/edit' role='button' aria-pressed='true') Edit
+

@@ -15,7 +15,7 @@ class AdminController {
     }
 
     verifyAdminStatus = async (params) => {
-        const is_admin = await AdminModel.findOne({A_Name : params.username, A_Pass : params.password})
+        const is_admin = await AdminModel.findOne({Account_Id : params.id})
         console.log(is_admin)
         if(is_admin){
             return true
