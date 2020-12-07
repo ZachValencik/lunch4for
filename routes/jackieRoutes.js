@@ -49,7 +49,8 @@ module.exports = (() => {
             await accounts_model.update(update_info, request.session.user_id)
         }
         console.log(info.password);
-        response.send(update_info);
+        //response.send(update_info);
+        response.redirect("/account");
     }));
             
     app.get('/meeting/leader/', (request, response) => {
@@ -64,12 +65,9 @@ module.exports = (() => {
             if (err) throw err;
             console.log("summary entered");
         });
-    response.send(`DATE:${request.body.summary_date}  TIME:${request.body.summary_time}  COMMENTS:${request.body.summary_comments}`);
+    //response.send(`DATE:${request.body.summary_date}  TIME:${request.body.summary_time}  COMMENTS:${request.body.summary_comments}`);
+    response.redirect("/meeting");
 });
-    app.get('/meeting/leader/details/', (request,response) => {
-    
-        response.render('meeting-leader-details');
-    });
 
     return app;
     
