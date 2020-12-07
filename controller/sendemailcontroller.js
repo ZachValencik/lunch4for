@@ -6,10 +6,10 @@ var nodemailer = require('nodemailer');
 //dotenv.config({path:'./.env'});
 //const connection = require('../controller/connection');
 const connection = mysql.createConnection({ //seems the only way below code works if this is here the above code gives errors
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
-  database: 'lunch4four'
+  host: '45.55.136.114',
+  user: 'csc3610',
+  password: 'csc3610',
+  database: 'STUDENT'
 });
 
 connection.connect(function(err) {
