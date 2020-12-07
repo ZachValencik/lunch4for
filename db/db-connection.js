@@ -4,6 +4,7 @@ dotenv.config({path:'./.env'});
 const mysql = require('mysql');
 
 class DBConnection {
+    
     constructor() {
         this.db = mysql.createPool({
             host: process.env.database_host,
