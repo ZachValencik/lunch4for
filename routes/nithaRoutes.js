@@ -91,5 +91,14 @@ module.exports = (() => {
 
     }))
 
+    app.get('/admin/reports', asyncHandler(async (request, response) => {
+        let info = request.session;
+        let summaryList = await MeetingModel.getSummary()
+        //console.log("summary: ", r);
+        response.render('admin-meeting-report.pug', { Summary: summaryList });
+        
+
+    }));
+
     return app;
 })();

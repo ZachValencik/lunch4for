@@ -1,0 +1,20 @@
+doctype html
+html(lang='en')
+    include ./header.pug
+    body
+        include ./nav.pug
+        .container
+            h1 View All Users
+            table.table.table-dark
+                tr
+                    thead.thead-dark
+                        th Name
+                        th Department
+                        th Leader
+                    
+                    tbody
+                        each s in Summary
+                            tr
+                                td=s.summary_date
+                                td=s.summary_time
+                                td=s.summary_comments
