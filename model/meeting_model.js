@@ -51,11 +51,18 @@ class MeetingModel {
     update = async (params, id) => {
         const { columnSet, values } = setmultipleColumnSet(params)
 
-        console.log('Columnset Values for update: ', columnSet)
-        console.log('Values from update: ', values)
+        //console.log('Columnset Values for update: ', columnSet)
+        //console.log('Values from update: ', values)
         const sql = `UPDATE team SET ${columnSet} WHERE Team_Id = ?`;
 
         const result = await query(sql, [...values, id]);
+
+        return result;
+    }
+
+    getSummary = async() =>{
+        const sql = `SELECT * FROM meeting_summary`;
+        const result = await query(sql);
 
         return result;
     }
