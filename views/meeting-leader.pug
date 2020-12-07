@@ -1,0 +1,52 @@
+doctype html
+head
+    include ./bootstrapScript.pug
+    include ./header.pug 
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    style 
+        include ../public/css/style.css
+    style.
+        label{
+            color: white;
+            font-family: "Roboto", sans-serif;
+            text-transform: uppercase;
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+        p {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-family: "Roboto", sans-serif;
+            font-size: 20px;
+            text-transform: uppercase;
+        }
+        h1 {
+            text-align: center;
+        }
+body
+    include ./nav.pug
+    .container
+    .border-arrow.curvy
+    h1.white December
+    div.jumbotron
+        p After Lunch Summary
+        form(action="/meeting/leader/summary", method="POST")
+            div.row.mb-1
+                div.col-sm-6.text-right
+                    label(for="summary_date") Date:
+                div.col-sm-6.text-left
+                    input(name="summary_date" value="" required='' style="width:260px")
+            div.row.mb-1
+                div.col-sm-6.text-right
+                    label(for="summary_time") Time:
+                div.col-sm-6.text-left
+                    input(name="summary_time" value="" required='' style="width:260px")
+            div.row.mb-1
+                div.col-sm-6.text-right
+                    label(for="summary_comments") Comments:
+                div.col-sm-6.text-left
+                    input(name="summary_comments" required='' style="width:260px; padding: 0 0 200px 0;")
+
+            button.btn.form.btn-outline-secondary(type="submit" style="margin:5px; margin-left:550px; margin-top:60px;") Submit
+
