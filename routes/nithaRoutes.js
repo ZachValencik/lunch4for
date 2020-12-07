@@ -1,5 +1,6 @@
 //this is used to handle all asynchrounous functions | an alternative to try catch 
 const asyncHandler = require('express-async-handler')
+const moment = require('moment')
 //model
 const ProfileModel = require('../model/profile_model')
 const UserModel = require("../model/accounts_model")
@@ -69,18 +70,17 @@ module.exports = (() => {
     }));
 
     app.post("/updateMeeting", asyncHandler(async (request, response) => {
-        // console.log(request.signedCookies.profile_email)
-        // await ProfileController.createDefault(request.body.email)
-        //to do => switch to useing classes for generating objects
+        let meetingTime = moment(request.body.meeting_time, ["h:mm A"]);
+
         let meeting_package = {
-            Meet_Date: request.body.meeting_date,
-            Meet_Time: request.body.meeting_time,
+            Meet_Date: request.body.meeting_date.replace(/(\d\d)\/(\d\d)\/(\d{4})/, "$3-$1-$2"),
+            Meet_Time: meetingTime.format("HH:mm"),
             Meet_Location: request.body.meeting_location
         }
 
         const teamID = request.body.team_id
         console.log("team id = ", teamID);
-        const userID = await AccountController.getID_UN(request.session.username)
+
         if (meeting_package) {
 
             await MeetingModel.update(meeting_package, teamID)

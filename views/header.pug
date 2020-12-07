@@ -8,10 +8,12 @@ head
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
     meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
     include ./bootstrap.pug
-
+    style
+        include ../public/css/date-time-picker.min.css
     style
         include ../public/css/style.css
     style
         include ../public/css/toggle.css
+    script(src='../public/js/date-picker.min.js' type="text/javascript")
     script(src="../public/js/calendar.js")
     script(src="/js/checkbox.js")
