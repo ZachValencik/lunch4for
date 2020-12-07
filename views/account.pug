@@ -1,51 +1,24 @@
 doctype html
-head
-    include ./bootstrapScript.pug
-    include ./header.pug 
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    style 
-        include ../public/css/style.css
-    style.
-        p { 
-            color: white;
-            font-family: "Roboto", sans-serif;
-            text-transform: uppercase;
-            font-size: 20px;
-            position:relative; 
-            left:-210px;
-            letter-spacing: 1px;
-        }
-         label { 
-            color: white;
-            font-family: "Roboto", sans-serif;
-            text-transform: uppercase;
-            font-size: 20px;
-            position:relative; 
-            left:-220px;
-            letter-spacing: 1px;
-         }
-            
+include ./header.pug       
 body
     include ./nav.pug
     .container
-        h1.white Account Settings
         div.col-sm-auto.py-3
-            div.row
+            h1 Account Settings
             form(action="/account", method="POST")
-                div.row.mb-1
+                .row.mb-1.white
+                    .col-sm-6.text-right
+                        label(for="id") ID:
+                    .col-sm-6.text-left
+                        p #{info.id}
+                .row.mb-1.white
                     div.col-sm-6.text-right
-                    label(for="id") ID:
-                    p #{info.id}
-                    div.col-sm-6
-                div.row.mb-1
-                    div.col-sm-6.text-right
-                    label(for="username") Username:
-                    p #{info.username}
+                        label(for="username") Username:
                     div.col-sm-6.text-left
-                div.row.mb-1
+                        p #{info.username}
+                div.row.mb-1.white
                     div.col-sm-6.text-right
-                    label(for="email") Email:
-                    p #{info.email}
+                        label(for="email") Email:
                     div.col-sm-6.text-left
-
+                        p #{info.email}
                 button.btn.form.btn-outline-secondary(type="submit" style="margin:5px;") Edit
