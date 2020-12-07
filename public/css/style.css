@@ -27,21 +27,25 @@ body {
 }
 .col-sm {
   background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
 }
 .col-sm-auto{
   background-color: rgba(0, 0, 0, 0.7);
   width: 50%;
   margin-left: auto;
   margin-right: auto;
+  border-radius: 5px;
 }
 .col-sm.login {
   margin: 20px;
   padding: 10px;
+  border-radius: 5px;
 }
 .col-sm.updatemeeting{
   width: 75%;
   margin-left: auto;
   margin-right: auto;
+  border-radius: 5px;
 }
 .container {
   text-align: center;

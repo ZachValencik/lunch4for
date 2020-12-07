@@ -1,8 +1,9 @@
 include ./header.pug
 body
+    include ./nav.pug
     .container
-        h1 Update your profile
-        .jumbotron
+        div.col-sm-auto.py-3
+            h1 Update your profile
             form(action='/update' method='POST')
                 .form-group
                     //- input(type='text' name='profile_name' value=profileData._name required='')
