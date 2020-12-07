@@ -4,13 +4,16 @@ const asyncHandler = require('express-async-handler');
 //model
 const { changeUser } = require('../model/connection');
 const accounts_model = require('../model/accounts_model');
+const MeetingModel = require('../model/meeting_model')
 //middleware, checks if you're signed in
 let user_session = require("../middleware/logged-status");
 //controller
 let signupVerify = require('../controller/account_verify')
+const MeetingController = require('../controller/meeting_controller')
 const account_controller = require('../controller/account_controller');
 
-const bcrypt = require('bcryptjs') // this makes it so you can get the hashed and salted password
+const bcrypt = require('bcryptjs'); // this makes it so you can get the hashed and salted password
+const { urlencoded } = require('body-parser');
 module.exports = (() => {
     //'use strict';
     let app = require('express').Router();
@@ -31,7 +34,7 @@ module.exports = (() => {
         let info = await accounts_model.findOne({id : request.session.user_id})
        response.render("account-edit",{info});
     }))
-    app.post("/account/update",user_session,asyncHandler(async function(request,response) {
+    app.post("/account/update", user_session,asyncHandler(async function(request,response) {
         let info = await accounts_model.findOne({id : request.session.user_id})
         if (request.body.password == "") {
             request.body.password = info.password
@@ -48,14 +51,25 @@ module.exports = (() => {
         console.log(info.password);
         response.send(update_info);
     }));
-    //app.get('/meeting/leader/:team_id', (request, response) => {
+            
     app.get('/meeting/leader/', (request, response) => {
-        response.render('meeting-leader');
+       response.render('meeting-leader');
     });
-    app.get('/meeting/leader/details/', (request, response) => {
+    var urlencodedParser = bodyParser.urlencoded({ extended: false });
+    app.post('/meeting/leader/summary', urlencodedParser, function(request,response) {
+        console.log(request.body);
+
+        var sql = "INSERT INTO meeting_summary VALUES ('"+ request.body.summary_date +"', '"+ request.body.summary_time+"', '"+ request.body.summary_comments +"')";
+        connection.query(sql, function (err) {
+            if (err) throw err;
+            console.log("summary entered");
+        });
+    response.send(`DATE:${request.body.summary_date}  TIME:${request.body.summary_time}  COMMENTS:${request.body.summary_comments}`);
+});
+    app.get('/meeting/leader/details/', (request,response) => {
+    
         response.render('meeting-leader-details');
     });
-
 
     return app;
     
