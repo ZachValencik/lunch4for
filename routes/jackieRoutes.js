@@ -2,16 +2,12 @@ const { response } = require('express');
 //async
 const asyncHandler = require('express-async-handler');
 //model
-const { changeUser } = require('../model/connection');
 const accounts_model = require('../model/accounts_model');
-const MeetingModel = require('../model/meeting_model')
 //middleware, checks if you're signed in
 let user_session = require("../middleware/logged-status");
 //controller
-let signupVerify = require('../controller/account_verify')
-const MeetingController = require('../controller/meeting_controller')
 const account_controller = require('../controller/account_controller');
-
+const AdminController = require('../controller/admin_controller')
 const bcrypt = require('bcryptjs'); // this makes it so you can get the hashed and salted password
 const { urlencoded } = require('body-parser');
 module.exports = (() => {
@@ -34,6 +30,7 @@ module.exports = (() => {
         let info = await accounts_model.findOne({id : request.session.user_id})
        response.render("account-edit",{info});
     }))
+    
     app.post("/account/update", user_session,asyncHandler(async function(request,response) {
         let info = await accounts_model.findOne({id : request.session.user_id})
         if (request.body.password == "") {
